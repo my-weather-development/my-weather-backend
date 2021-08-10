@@ -1,4 +1,4 @@
-## Forecast APIs:
+## Forecast APIs and additional info:
 
 ##### FORECA - with API usage monitoring, no info about pricing:```https://developer.foreca.com/```
 
@@ -24,3 +24,27 @@
 ##### Get data about user by user IP
 
 ```https://ipstack.com/documentation```
+
+## Setup Vault
+Run vault for development: ```dev/vault/docker-compose.yml```
+Then go to container bash 
+
+```docker exec -it dvault sh```
+
+and run follow commands
+
+- ```vault login root```
+
+- ```vault kv put secret/w-api-vault-config weather-api.key={api_key}``` (set your entry with key:value)
+
+And then, configure Vault for Spring Boot. Enjoy :)
+You can use Vault UI for clarity (see port mapping in the docker-compose.yml)
+
+From more details see guides and Vault docs:
+```https://spring.io/guides/gs/vault-config/```
+
+```https://github.com/spring-guides/gs-vault-config```
+
+```https://hub.docker.com/_/vault```
+
+```https://www.vaultproject.io/docs```
