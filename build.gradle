@@ -13,10 +13,14 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap:3.0.3'
+    implementation 'org.springframework.cloud:spring-cloud-starter-vault-config:2.2.2.RELEASE'
+    implementation 'org.springframework.vault:spring-vault-core:2.2.2.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.2'
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-configuration-processor:2.5.2'
+//    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 test {
