@@ -1,4 +1,4 @@
-package com.github.evgolya.myweather;
+package com.github.evgolya.application;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
