@@ -1,0 +1,17 @@
+package com.github.evgolya.forecast.parameter;
+
+public class QueryUrlParameter implements UrlParameter {
+
+    private final Double latitude;
+    private final Double longitude;
+
+    public QueryUrlParameter(Double latitude, Double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    @Override
+    public String stringify() {
+        return "&q=" + latitude + "," + longitude; // TODO: use formatter
+    }
+}
