@@ -4,6 +4,7 @@ import com.github.evgolya.forecast.WeatherApiConstants;
 import com.github.evgolya.forecast.parameter.DaysUrlParameter;
 import com.github.evgolya.forecast.parameter.ForecastUrlBuilder;
 import com.github.evgolya.forecast.parameter.QueryUrlParameter;
+import com.github.evgolya.forecast.parameter.UrlParameter;
 import com.github.evgolya.vault.WeatherApiKeyProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,16 +30,11 @@ public class ForecastApiClient {
     }
 
     public String getCurrentWeatherByCoordinates(double latitude, double longitude) {
-        final ForecastUrlBuilder forecastUrlBuilder = new ForecastUrlBuilder(WeatherApiConstants.CURRENT_WEATHER_METHOD, apiKeyUrlParameter);
-        forecastUrlBuilder.addParameter(new QueryUrlParameter(latitude, longitude));
-        return getData(forecastUrlBuilder.buildUrl());
+        return getData(WeatherApiConstants.CURRENT_WEATHER_METHOD, new QueryUrlParameter(latitude, longitude));
     }
 
     public String getForecastByCoordinates(int days, double latitude, double longitude) {
-        final ForecastUrlBuilder forecastUrlBuilder = new ForecastUrlBuilder(WeatherApiConstants.FORECAST_METHOD, apiKeyUrlParameter);
-        forecastUrlBuilder.addParameter(new QueryUrlParameter(latitude, longitude));
-        forecastUrlBuilder.addParameter(new DaysUrlParameter(days));
-        return getData(forecastUrlBuilder.buildUrl());
+        return getData(WeatherApiConstants.FORECAST_METHOD, new QueryUrlParameter(latitude, longitude), new DaysUrlParameter(days));
     }
 
     public String getForecastByCoordinates(int days, String latitude, String longitude) {
@@ -71,7 +67,17 @@ public class ForecastApiClient {
         return null;
     }
 
-    public String getData(String url) {
+    private String getData(String apiMethod, UrlParameter ... parameters) {
+        final ForecastUrlBuilder forecastUrlBuilder = new ForecastUrlBuilder(apiMethod, apiKeyUrlParameter);
+
+        for (UrlParameter parameter : parameters) {
+            forecastUrlBuilder.addParameter(parameter);
+        }
+
+        return makeRequest(forecastUrlBuilder.buildUrl());
+    }
+
+    public String makeRequest(String url) {
         try {
             final HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))

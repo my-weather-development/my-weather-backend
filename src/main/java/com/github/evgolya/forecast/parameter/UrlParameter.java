@@ -1,6 +1,6 @@
 package com.github.evgolya.forecast.parameter;
 
-interface UrlParameter {
+public interface UrlParameter {
 
     String stringify();
 }

@@ -12,6 +12,6 @@ public class QueryUrlParameter implements UrlParameter {
 
     @Override
     public String stringify() {
-        return "&q=" + latitude + "," + longitude; // TODO: use formatter
+        return String.format("&q=%f,%f", latitude, longitude);
     }
 }

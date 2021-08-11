@@ -10,6 +10,6 @@ public class DaysUrlParameter implements UrlParameter {
 
     @Override
     public String stringify() {
-        return "&days=" + days; // TODO: use formatter
+        return String.format("&days=%d", days);
     }
 }
