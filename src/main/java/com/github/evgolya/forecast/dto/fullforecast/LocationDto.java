@@ -1,4 +1,4 @@
-package com.github.evgolya.forecast.dto;
+package com.github.evgolya.forecast.dto.fullforecast;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,10 +13,10 @@ public class LocationDto {
     private String country;
 
     @JsonProperty("lat")
-    private Integer latitude;
+    private Double latitude;
 
     @JsonProperty("lon")
-    private Integer longitude;
+    private Double longitude;
 
     @JsonProperty("tz_id")
     private String timezone;
@@ -47,19 +47,19 @@ public class LocationDto {
         this.country = country;
     }
 
-    public Integer getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Integer latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public Integer getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Integer longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 

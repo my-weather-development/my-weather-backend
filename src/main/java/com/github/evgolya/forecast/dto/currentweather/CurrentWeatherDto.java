@@ -1,16 +1,17 @@
-package com.github.evgolya.forecast.dto;
+package com.github.evgolya.forecast.dto.currentweather;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.evgolya.forecast.dto.fullforecast.LocationDto;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FullForecastDto {
+public class CurrentWeatherDto {
 
     @JsonProperty("location")
     private LocationDto locationDto;
 
-    @JsonProperty("forecast")
-    private ForecastDto forecastDto;
+    @JsonProperty("current")
+    private CurrentForecast currentForecast;
 
     public LocationDto getLocationDto() {
         return locationDto;
@@ -20,19 +21,19 @@ public class FullForecastDto {
         this.locationDto = locationDto;
     }
 
-    public ForecastDto getForecastDto() {
-        return forecastDto;
+    public CurrentForecast getCurrentForecast() {
+        return currentForecast;
     }
 
-    public void setForecastDto(ForecastDto forecastDto) {
-        this.forecastDto = forecastDto;
+    public void setCurrentForecast(CurrentForecast currentForecast) {
+        this.currentForecast = currentForecast;
     }
 
     @Override
     public String toString() {
-        return "FullForecastDto{" +
+        return "CurrentWeatherDto{" +
             "locationDto=" + locationDto +
-            ", forecastDto=" + forecastDto +
+            ", currentForecast=" + currentForecast +
             '}';
     }
 }

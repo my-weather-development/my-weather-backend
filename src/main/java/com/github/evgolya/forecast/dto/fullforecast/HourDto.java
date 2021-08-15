@@ -1,4 +1,4 @@
-package com.github.evgolya.forecast.dto;
+package com.github.evgolya.forecast.dto.fullforecast;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,10 +9,10 @@ public class HourDto {
     private String time;
 
     @JsonProperty("temp_c")
-    private Integer temperatureInCelsius;
+    private Double temperatureInCelsius;
 
     @JsonProperty("temp_f")
-    private Integer temperatureInFahrenheit;
+    private Double temperatureInFahrenheit;
 
     @JsonProperty("is_day")
     private Integer isDay;
@@ -20,58 +20,58 @@ public class HourDto {
     private ConditionDto condition;
 
     @JsonProperty("wind_mph")
-    private Integer windMPH;
+    private Double windMPH;
 
     @JsonProperty("wind_kph")
-    private Integer windKPH;
+    private Double windKPH;
 
     @JsonProperty("wind_degree")
-    private Integer windDegree;
+    private Double windDegree;
 
     @JsonProperty("wind_dir")
     private String windDirection;
 
     @JsonProperty("pressure_mb")
-    private Integer pressureMB;
+    private Double pressureMB;
 
     @JsonProperty("pressure_in")
-    private Integer pressureIN;
+    private Double pressureIN;
 
     @JsonProperty("precip_mm")
-    private Integer precipitationsMM;
+    private Double precipitationsMM;
 
     @JsonProperty("precip_in")
-    private Integer precipitationsIN;
+    private Double precipitationsIN;
 
     @JsonProperty("humidity")
-    private Integer humidity;
+    private Double humidity;
 
     @JsonProperty("cloud")
-    private Integer cloud;
+    private Double cloud;
 
     @JsonProperty("feelslike_c")
-    private Integer feelsLikeInCelsius;
+    private Double feelsLikeInCelsius;
 
     @JsonProperty("feelslike_f")
-    private Integer feelsLikeInFahrenheit;
+    private Double feelsLikeInFahrenheit;
 
     @JsonProperty("windchill_c")
-    private Integer windchillInCelsius;
+    private Double windchillInCelsius;
 
     @JsonProperty("windchill_f")
-    private Integer windchillInFahrenheit;
+    private Double windchillInFahrenheit;
 
     @JsonProperty("heatindex_c")
-    private Integer heatIndexInCelsius;
+    private Double heatIndexInCelsius;
 
     @JsonProperty("heatindex_f")
-    private Integer heatIndexInFahrenheit;
+    private Double heatIndexInFahrenheit;
 
     @JsonProperty("dewpoint_c")
-    private Integer dewPointInCelsius;
+    private Double dewPointInCelsius;
 
     @JsonProperty("dewpoint_f")
-    private Integer dewPointInFahrenheit;
+    private Double dewPointInFahrenheit;
 
     @JsonProperty("will_it_rain")
     private Integer willItRain;
@@ -86,19 +86,19 @@ public class HourDto {
     private String chanceOfSnow;
 
     @JsonProperty("vis_km")
-    private Integer visibilityKM;
+    private Double visibilityKM;
 
     @JsonProperty("vis_miles")
-    private Integer visibilityMiles;
+    private Double visibilityMiles;
 
     @JsonProperty("gust_mph")
-    private Integer gustMPH;
+    private Double gustMPH;
 
     @JsonProperty("gust_kph")
-    private Integer gustKPH;
+    private Double gustKPH;
 
     @JsonProperty("uv")
-    private Integer ultraviolet;
+    private Double ultraviolet;
 
     public String getTime() {
         return time;
@@ -108,19 +108,19 @@ public class HourDto {
         this.time = time;
     }
 
-    public Integer getTemperatureInCelsius() {
+    public Double getTemperatureInCelsius() {
         return temperatureInCelsius;
     }
 
-    public void setTemperatureInCelsius(Integer temperatureInCelsius) {
+    public void setTemperatureInCelsius(Double temperatureInCelsius) {
         this.temperatureInCelsius = temperatureInCelsius;
     }
 
-    public Integer getTemperatureInFahrenheit() {
+    public Double getTemperatureInFahrenheit() {
         return temperatureInFahrenheit;
     }
 
-    public void setTemperatureInFahrenheit(Integer temperatureInFahrenheit) {
+    public void setTemperatureInFahrenheit(Double temperatureInFahrenheit) {
         this.temperatureInFahrenheit = temperatureInFahrenheit;
     }
 
@@ -140,27 +140,27 @@ public class HourDto {
         this.condition = condition;
     }
 
-    public Integer getWindMPH() {
+    public Double getWindMPH() {
         return windMPH;
     }
 
-    public void setWindMPH(Integer windMPH) {
+    public void setWindMPH(Double windMPH) {
         this.windMPH = windMPH;
     }
 
-    public Integer getWindKPH() {
+    public Double getWindKPH() {
         return windKPH;
     }
 
-    public void setWindKPH(Integer windKPH) {
+    public void setWindKPH(Double windKPH) {
         this.windKPH = windKPH;
     }
 
-    public Integer getWindDegree() {
+    public Double getWindDegree() {
         return windDegree;
     }
 
-    public void setWindDegree(Integer windDegree) {
+    public void setWindDegree(Double windDegree) {
         this.windDegree = windDegree;
     }
 
@@ -172,115 +172,115 @@ public class HourDto {
         this.windDirection = windDirection;
     }
 
-    public Integer getPressureMB() {
+    public Double getPressureMB() {
         return pressureMB;
     }
 
-    public void setPressureMB(Integer pressureMB) {
+    public void setPressureMB(Double pressureMB) {
         this.pressureMB = pressureMB;
     }
 
-    public Integer getPressureIN() {
+    public Double getPressureIN() {
         return pressureIN;
     }
 
-    public void setPressureIN(Integer pressureIN) {
+    public void setPressureIN(Double pressureIN) {
         this.pressureIN = pressureIN;
     }
 
-    public Integer getPrecipitationsMM() {
+    public Double getPrecipitationsMM() {
         return precipitationsMM;
     }
 
-    public void setPrecipitationsMM(Integer precipitationsMM) {
+    public void setPrecipitationsMM(Double precipitationsMM) {
         this.precipitationsMM = precipitationsMM;
     }
 
-    public Integer getPrecipitationsIN() {
+    public Double getPrecipitationsIN() {
         return precipitationsIN;
     }
 
-    public void setPrecipitationsIN(Integer precipitationsIN) {
+    public void setPrecipitationsIN(Double precipitationsIN) {
         this.precipitationsIN = precipitationsIN;
     }
 
-    public Integer getHumidity() {
+    public Double getHumidity() {
         return humidity;
     }
 
-    public void setHumidity(Integer humidity) {
+    public void setHumidity(Double humidity) {
         this.humidity = humidity;
     }
 
-    public Integer getCloud() {
+    public Double getCloud() {
         return cloud;
     }
 
-    public void setCloud(Integer cloud) {
+    public void setCloud(Double cloud) {
         this.cloud = cloud;
     }
 
-    public Integer getFeelsLikeInCelsius() {
+    public Double getFeelsLikeInCelsius() {
         return feelsLikeInCelsius;
     }
 
-    public void setFeelsLikeInCelsius(Integer feelsLikeInCelsius) {
+    public void setFeelsLikeInCelsius(Double feelsLikeInCelsius) {
         this.feelsLikeInCelsius = feelsLikeInCelsius;
     }
 
-    public Integer getFeelsLikeInFahrenheit() {
+    public Double getFeelsLikeInFahrenheit() {
         return feelsLikeInFahrenheit;
     }
 
-    public void setFeelsLikeInFahrenheit(Integer feelsLikeInFahrenheit) {
+    public void setFeelsLikeInFahrenheit(Double feelsLikeInFahrenheit) {
         this.feelsLikeInFahrenheit = feelsLikeInFahrenheit;
     }
 
-    public Integer getWindchillInCelsius() {
+    public Double getWindchillInCelsius() {
         return windchillInCelsius;
     }
 
-    public void setWindchillInCelsius(Integer windchillInCelsius) {
+    public void setWindchillInCelsius(Double windchillInCelsius) {
         this.windchillInCelsius = windchillInCelsius;
     }
 
-    public Integer getWindchillInFahrenheit() {
+    public Double getWindchillInFahrenheit() {
         return windchillInFahrenheit;
     }
 
-    public void setWindchillInFahrenheit(Integer windchillInFahrenheit) {
+    public void setWindchillInFahrenheit(Double windchillInFahrenheit) {
         this.windchillInFahrenheit = windchillInFahrenheit;
     }
 
-    public Integer getHeatIndexInCelsius() {
+    public Double getHeatIndexInCelsius() {
         return heatIndexInCelsius;
     }
 
-    public void setHeatIndexInCelsius(Integer heatIndexInCelsius) {
+    public void setHeatIndexInCelsius(Double heatIndexInCelsius) {
         this.heatIndexInCelsius = heatIndexInCelsius;
     }
 
-    public Integer getHeatIndexInFahrenheit() {
+    public Double getHeatIndexInFahrenheit() {
         return heatIndexInFahrenheit;
     }
 
-    public void setHeatIndexInFahrenheit(Integer heatIndexInFahrenheit) {
+    public void setHeatIndexInFahrenheit(Double heatIndexInFahrenheit) {
         this.heatIndexInFahrenheit = heatIndexInFahrenheit;
     }
 
-    public Integer getDewPointInCelsius() {
+    public Double getDewPointInCelsius() {
         return dewPointInCelsius;
     }
 
-    public void setDewPointInCelsius(Integer dewPointInCelsius) {
+    public void setDewPointInCelsius(Double dewPointInCelsius) {
         this.dewPointInCelsius = dewPointInCelsius;
     }
 
-    public Integer getDewPointInFahrenheit() {
+    public Double getDewPointInFahrenheit() {
         return dewPointInFahrenheit;
     }
 
-    public void setDewPointInFahrenheit(Integer dewPointInFahrenheit) {
+    public void setDewPointInFahrenheit(Double dewPointInFahrenheit) {
         this.dewPointInFahrenheit = dewPointInFahrenheit;
     }
 
@@ -316,43 +316,43 @@ public class HourDto {
         this.chanceOfSnow = chanceOfSnow;
     }
 
-    public Integer getVisibilityKM() {
+    public Double getVisibilityKM() {
         return visibilityKM;
     }
 
-    public void setVisibilityKM(Integer visibilityKM) {
+    public void setVisibilityKM(Double visibilityKM) {
         this.visibilityKM = visibilityKM;
     }
 
-    public Integer getVisibilityMiles() {
+    public Double getVisibilityMiles() {
         return visibilityMiles;
     }
 
-    public void setVisibilityMiles(Integer visibilityMiles) {
+    public void setVisibilityMiles(Double visibilityMiles) {
         this.visibilityMiles = visibilityMiles;
     }
 
-    public Integer getGustMPH() {
+    public Double getGustMPH() {
         return gustMPH;
     }
 
-    public void setGustMPH(Integer gustMPH) {
+    public void setGustMPH(Double gustMPH) {
         this.gustMPH = gustMPH;
     }
 
-    public Integer getGustKPH() {
+    public Double getGustKPH() {
         return gustKPH;
     }
 
-    public void setGustKPH(Integer gustKPH) {
+    public void setGustKPH(Double gustKPH) {
         this.gustKPH = gustKPH;
     }
 
-    public Integer getUltraviolet() {
+    public Double getUltraviolet() {
         return ultraviolet;
     }
 
-    public void setUltraviolet(Integer ultraviolet) {
+    public void setUltraviolet(Double ultraviolet) {
         this.ultraviolet = ultraviolet;
     }
 

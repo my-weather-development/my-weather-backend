@@ -1,4 +1,4 @@
-package com.github.evgolya.forecast.dto;
+package com.github.evgolya.forecast.dto.fullforecast;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,43 +7,43 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class DayDto {
 
     @JsonProperty("maxtemp_c")
-    private Integer maxTemperatureInCelsius;
+    private Double maxTemperatureInCelsius;
 
     @JsonProperty("maxtemp_f")
-    private Integer maxTemperatureInFahrenheit;
+    private Double maxTemperatureInFahrenheit;
 
     @JsonProperty("mintemp_c")
-    private Integer minTemperatureInCelsius;
+    private Double minTemperatureInCelsius;
 
     @JsonProperty("mintemp_f")
-    private Integer minTemperatureInFahrenheit;
+    private Double minTemperatureInFahrenheit;
 
     @JsonProperty("avgtemp_c")
-    private Integer averageTemperatureInCelsius;
+    private Double averageTemperatureInCelsius;
 
     @JsonProperty("avgtemp_f")
-    private Integer averageTemperatureInFahrenheit;
+    private Double averageTemperatureInFahrenheit;
 
     @JsonProperty("maxwind_mph")
-    private Integer maxWindMPH;
+    private Double maxWindMPH;
 
     @JsonProperty("maxwind_kph")
-    private Integer maxWindKPH;
+    private Double maxWindKPH;
 
     @JsonProperty("totalprecip_mm")
-    private Integer totalPrecipitationsMM;
+    private Double totalPrecipitationsMM;
 
     @JsonProperty("totalprecip_in")
-    private Integer totalPrecipitationsIN;
+    private Double totalPrecipitationsIN;
 
     @JsonProperty("avgvis_km")
-    private Integer averageVisibilityKM;
+    private Double averageVisibilityKM;
 
     @JsonProperty("avgvis_miles")
-    private Integer averageVisibilityMiles;
+    private Double averageVisibilityMiles;
 
     @JsonProperty("avghumidity")
-    private Integer averageHumidity;
+    private Double averageHumidity;
 
     @JsonProperty("daily_will_it_rain")
     private Integer dailyWillItRain;
@@ -61,109 +61,109 @@ public class DayDto {
     private ConditionDto condition;
 
     @JsonProperty("uv")
-    private Integer ultraviolet;
+    private Double ultraviolet;
 
-    public Integer getMaxTemperatureInCelsius() {
+    public Double getMaxTemperatureInCelsius() {
         return maxTemperatureInCelsius;
     }
 
-    public void setMaxTemperatureInCelsius(Integer maxTemperatureInCelsius) {
+    public void setMaxTemperatureInCelsius(Double maxTemperatureInCelsius) {
         this.maxTemperatureInCelsius = maxTemperatureInCelsius;
     }
 
-    public Integer getMaxTemperatureInFahrenheit() {
+    public Double getMaxTemperatureInFahrenheit() {
         return maxTemperatureInFahrenheit;
     }
 
-    public void setMaxTemperatureInFahrenheit(Integer maxTemperatureInFahrenheit) {
+    public void setMaxTemperatureInFahrenheit(Double maxTemperatureInFahrenheit) {
         this.maxTemperatureInFahrenheit = maxTemperatureInFahrenheit;
     }
 
-    public Integer getMinTemperatureInCelsius() {
+    public Double getMinTemperatureInCelsius() {
         return minTemperatureInCelsius;
     }
 
-    public void setMinTemperatureInCelsius(Integer minTemperatureInCelsius) {
+    public void setMinTemperatureInCelsius(Double minTemperatureInCelsius) {
         this.minTemperatureInCelsius = minTemperatureInCelsius;
     }
 
-    public Integer getMinTemperatureInFahrenheit() {
+    public Double getMinTemperatureInFahrenheit() {
         return minTemperatureInFahrenheit;
     }
 
-    public void setMinTemperatureInFahrenheit(Integer minTemperatureInFahrenheit) {
+    public void setMinTemperatureInFahrenheit(Double minTemperatureInFahrenheit) {
         this.minTemperatureInFahrenheit = minTemperatureInFahrenheit;
     }
 
-    public Integer getAverageTemperatureInCelsius() {
+    public Double getAverageTemperatureInCelsius() {
         return averageTemperatureInCelsius;
     }
 
-    public void setAverageTemperatureInCelsius(Integer averageTemperatureInCelsius) {
+    public void setAverageTemperatureInCelsius(Double averageTemperatureInCelsius) {
         this.averageTemperatureInCelsius = averageTemperatureInCelsius;
     }
 
-    public Integer getAverageTemperatureInFahrenheit() {
+    public Double getAverageTemperatureInFahrenheit() {
         return averageTemperatureInFahrenheit;
     }
 
-    public void setAverageTemperatureInFahrenheit(Integer averageTemperatureInFahrenheit) {
+    public void setAverageTemperatureInFahrenheit(Double averageTemperatureInFahrenheit) {
         this.averageTemperatureInFahrenheit = averageTemperatureInFahrenheit;
     }
 
-    public Integer getMaxWindMPH() {
+    public Double getMaxWindMPH() {
         return maxWindMPH;
     }
 
-    public void setMaxWindMPH(Integer maxWindMPH) {
+    public void setMaxWindMPH(Double maxWindMPH) {
         this.maxWindMPH = maxWindMPH;
     }
 
-    public Integer getMaxWindKPH() {
+    public Double getMaxWindKPH() {
         return maxWindKPH;
     }
 
-    public void setMaxWindKPH(Integer maxWindKPH) {
+    public void setMaxWindKPH(Double maxWindKPH) {
         this.maxWindKPH = maxWindKPH;
     }
 
-    public Integer getTotalPrecipitationsMM() {
+    public Double getTotalPrecipitationsMM() {
         return totalPrecipitationsMM;
     }
 
-    public void setTotalPrecipitationsMM(Integer totalPrecipitationsMM) {
+    public void setTotalPrecipitationsMM(Double totalPrecipitationsMM) {
         this.totalPrecipitationsMM = totalPrecipitationsMM;
     }
 
-    public Integer getTotalPrecipitationsIN() {
+    public Double getTotalPrecipitationsIN() {
         return totalPrecipitationsIN;
     }
 
-    public void setTotalPrecipitationsIN(Integer totalPrecipitationsIN) {
+    public void setTotalPrecipitationsIN(Double totalPrecipitationsIN) {
         this.totalPrecipitationsIN = totalPrecipitationsIN;
     }
 
-    public Integer getAverageVisibilityKM() {
+    public Double getAverageVisibilityKM() {
         return averageVisibilityKM;
     }
 
-    public void setAverageVisibilityKM(Integer averageVisibilityKM) {
+    public void setAverageVisibilityKM(Double averageVisibilityKM) {
         this.averageVisibilityKM = averageVisibilityKM;
     }
 
-    public Integer getAverageVisibilityMiles() {
+    public Double getAverageVisibilityMiles() {
         return averageVisibilityMiles;
     }
 
-    public void setAverageVisibilityMiles(Integer averageVisibilityMiles) {
+    public void setAverageVisibilityMiles(Double averageVisibilityMiles) {
         this.averageVisibilityMiles = averageVisibilityMiles;
     }
 
-    public Integer getAverageHumidity() {
+    public Double getAverageHumidity() {
         return averageHumidity;
     }
 
-    public void setAverageHumidity(Integer averageHumidity) {
+    public void setAverageHumidity(Double averageHumidity) {
         this.averageHumidity = averageHumidity;
     }
 
@@ -207,11 +207,11 @@ public class DayDto {
         this.condition = condition;
     }
 
-    public Integer getUltraviolet() {
+    public Double getUltraviolet() {
         return ultraviolet;
     }
 
-    public void setUltraviolet(Integer ultraviolet) {
+    public void setUltraviolet(Double ultraviolet) {
         this.ultraviolet = ultraviolet;
     }
 

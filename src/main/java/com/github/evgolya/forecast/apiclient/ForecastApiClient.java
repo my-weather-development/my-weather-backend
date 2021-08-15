@@ -1,6 +1,10 @@
 package com.github.evgolya.forecast.apiclient;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.evgolya.forecast.WeatherApiConstants;
+import com.github.evgolya.forecast.dto.currentweather.CurrentWeatherDto;
+import com.github.evgolya.forecast.dto.fullforecast.FullForecastDto;
 import com.github.evgolya.forecast.parameter.DaysUrlParameter;
 import com.github.evgolya.forecast.parameter.ForecastUrlBuilder;
 import com.github.evgolya.forecast.parameter.QueryUrlParameter;
@@ -23,18 +27,35 @@ public class ForecastApiClient {
     private static final Logger logger = LoggerFactory.getLogger(ForecastApiClient.class);
     private final HttpClient httpClient;
     private final String apiKeyUrlParameter;
+    private final ObjectMapper objectMapper;
 
     public ForecastApiClient(WeatherApiKeyProvider weatherApiKeyProvider) {
-        this.apiKeyUrlParameter = weatherApiKeyProvider.getKey();
         this.httpClient = HttpClient.newHttpClient();
+        this.apiKeyUrlParameter = weatherApiKeyProvider.getKey();
+        this.objectMapper = new ObjectMapper();
     }
 
-    public String getCurrentWeatherByCoordinates(double latitude, double longitude) {
-        return getData(WeatherApiConstants.CURRENT_WEATHER_METHOD, new QueryUrlParameter(latitude, longitude));
+    public CurrentWeatherDto getCurrentWeatherByCoordinates(double latitude, double longitude) {
+        final HttpResponse<String> response = getData(WeatherApiConstants.CURRENT_WEATHER_METHOD, new QueryUrlParameter(latitude, longitude));
+        try {
+            return objectMapper.readValue(response.body(), CurrentWeatherDto.class);
+        } catch (JsonProcessingException e) {
+            logger.error("JSON parsing exception for coordinates: lat {}, lon {}", latitude, longitude);
+            throw new ForecastDataParsingException("Cannot process current weather data", e);
+        }
     }
 
-    public String getForecastByCoordinates(int days, double latitude, double longitude) {
-        return getData(WeatherApiConstants.FORECAST_METHOD, new QueryUrlParameter(latitude, longitude), new DaysUrlParameter(days));
+    public FullForecastDto getForecastByCoordinates(int days, double latitude, double longitude) {
+        final HttpResponse<String> response = getData(
+            WeatherApiConstants.FORECAST_METHOD,
+            new QueryUrlParameter(latitude, longitude), new DaysUrlParameter(days)
+        );
+        try {
+            return objectMapper.readValue(response.body(), FullForecastDto.class);
+        } catch (JsonProcessingException e) {
+            logger.error("JSON parsing exception for coordinates: lat {}, lon {}", latitude, longitude);
+            throw new ForecastDataParsingException("Cannot process forecast data", e);
+        }
     }
 
     public String getForecastByCoordinates(int days, String latitude, String longitude) {
@@ -67,22 +88,22 @@ public class ForecastApiClient {
         return null;
     }
 
-    private String getData(String apiMethod, UrlParameter ... parameters) {
+    private HttpResponse<String> getData(String apiMethod, UrlParameter ... parameters) {
         final ForecastUrlBuilder forecastUrlBuilder = new ForecastUrlBuilder(apiMethod, apiKeyUrlParameter);
-
         for (UrlParameter parameter : parameters) {
             forecastUrlBuilder.addParameter(parameter);
         }
-
-        return makeRequest(forecastUrlBuilder.buildUrl());
+        return sendHttpRequest(forecastUrlBuilder.buildUrl());
     }
 
-    public String makeRequest(String url) {
+    public HttpResponse<String> sendHttpRequest(String url) {
         try {
             final HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
+                .header("Content-Type", "application/json")
+                .GET()
                 .build();
-            return httpClient.send(request, HttpResponse.BodyHandlers.ofString()).body();
+            return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             logger.error("Cannot send request to the Weather API");
             throw new WeatherApiRequestException("Cannot send request to the Weather API", e);
@@ -92,6 +113,13 @@ public class ForecastApiClient {
     private static final class WeatherApiRequestException extends RuntimeException {
 
         private WeatherApiRequestException(String message, Exception exception) {
+            super(message, exception);
+        }
+    }
+
+    private static final class ForecastDataParsingException extends RuntimeException {
+
+        public ForecastDataParsingException(String message, JsonProcessingException exception) {
             super(message, exception);
         }
     }

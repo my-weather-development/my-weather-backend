@@ -1,4 +1,4 @@
-package com.github.evgolya.forecast.dto;
+package com.github.evgolya.forecast.dto.fullforecast;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
