@@ -1,4 +1,4 @@
-package com.github.evgolya.forecast.parameter;
+package com.github.evgolya.weatherapi.apiclient.urlbuilder;
 
 public class QueryUrlParameter implements UrlParameter {
 

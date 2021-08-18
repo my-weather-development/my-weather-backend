@@ -1,8 +1,9 @@
-package com.github.evgolya.forecast;
+package com.github.evgolya.weatherapi.forecast;
 
-import com.github.evgolya.forecast.apiclient.ForecastApiClient;
-import com.github.evgolya.forecast.dto.currentweather.CurrentWeatherDto;
-import com.github.evgolya.forecast.dto.fullforecast.FullForecastDto;
+import com.github.evgolya.weatherapi.LocalityCoordinates;
+import com.github.evgolya.weatherapi.apiclient.ForecastApiClient;
+import com.github.evgolya.weatherapi.forecast.currentweatherdto.CurrentWeatherDto;
+import com.github.evgolya.weatherapi.forecast.fullforecastdto.FullForecastDto;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

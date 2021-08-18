@@ -1,4 +1,4 @@
-package com.github.evgolya.forecast;
+package com.github.evgolya.weatherapi;
 
 public final class WeatherApiConstants {
 
@@ -6,6 +6,7 @@ public final class WeatherApiConstants {
 
     public static final String CURRENT_WEATHER_METHOD = "/current.json";
     public static final String FORECAST_METHOD = "/forecast.json";
+    public static final String ASTRONOMY_METHOD = "/astronomy.json";
 
     private WeatherApiConstants() {
         // hide public constructor

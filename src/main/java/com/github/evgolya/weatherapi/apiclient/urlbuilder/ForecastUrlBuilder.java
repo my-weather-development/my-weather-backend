@@ -1,6 +1,6 @@
-package com.github.evgolya.forecast.parameter;
+package com.github.evgolya.weatherapi.apiclient.urlbuilder;
 
-import com.github.evgolya.forecast.WeatherApiConstants;
+import com.github.evgolya.weatherapi.WeatherApiConstants;
 
 import java.util.ArrayList;
 import java.util.List;

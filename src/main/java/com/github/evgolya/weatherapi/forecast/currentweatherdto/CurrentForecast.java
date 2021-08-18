@@ -1,8 +1,8 @@
-package com.github.evgolya.forecast.dto.currentweather;
+package com.github.evgolya.weatherapi.forecast.currentweatherdto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.evgolya.forecast.dto.fullforecast.ConditionDto;
+import com.github.evgolya.weatherapi.forecast.ConditionDto;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CurrentForecast {

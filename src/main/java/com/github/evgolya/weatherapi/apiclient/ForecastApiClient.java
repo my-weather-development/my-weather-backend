@@ -1,15 +1,16 @@
-package com.github.evgolya.forecast.apiclient;
+package com.github.evgolya.weatherapi.apiclient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.evgolya.forecast.WeatherApiConstants;
-import com.github.evgolya.forecast.dto.currentweather.CurrentWeatherDto;
-import com.github.evgolya.forecast.dto.fullforecast.FullForecastDto;
-import com.github.evgolya.forecast.parameter.DaysUrlParameter;
-import com.github.evgolya.forecast.parameter.ForecastUrlBuilder;
-import com.github.evgolya.forecast.parameter.QueryUrlParameter;
-import com.github.evgolya.forecast.parameter.UrlParameter;
 import com.github.evgolya.vault.WeatherApiKeyProvider;
+import com.github.evgolya.weatherapi.WeatherApiConstants;
+import com.github.evgolya.weatherapi.apiclient.urlbuilder.DaysUrlParameter;
+import com.github.evgolya.weatherapi.apiclient.urlbuilder.ForecastUrlBuilder;
+import com.github.evgolya.weatherapi.apiclient.urlbuilder.QueryUrlParameter;
+import com.github.evgolya.weatherapi.apiclient.urlbuilder.UrlParameter;
+import com.github.evgolya.weatherapi.astronomy.AstronomyDto;
+import com.github.evgolya.weatherapi.forecast.currentweatherdto.CurrentWeatherDto;
+import com.github.evgolya.weatherapi.forecast.fullforecastdto.FullForecastDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -88,7 +89,17 @@ public class ForecastApiClient {
         return null;
     }
 
-    private HttpResponse<String> getData(String apiMethod, UrlParameter ... parameters) {
+    public AstronomyDto getAstronomyData(double latitude, double longitude) {
+        final HttpResponse<String> response = getData(WeatherApiConstants.ASTRONOMY_METHOD, new QueryUrlParameter(latitude, longitude));
+        try {
+            return objectMapper.readValue(response.body(), AstronomyDto.class);
+        } catch (JsonProcessingException e) {
+            logger.error("JSON parsing exception for coordinates: lat {}, lon {}", latitude, longitude);
+            throw new AstronomyDataParsingException("Cannot process astronomy data", e);
+        }
+    }
+
+    private HttpResponse<String> getData(String apiMethod, UrlParameter... parameters) {
         final ForecastUrlBuilder forecastUrlBuilder = new ForecastUrlBuilder(apiMethod, apiKeyUrlParameter);
         for (UrlParameter parameter : parameters) {
             forecastUrlBuilder.addParameter(parameter);
@@ -120,6 +131,13 @@ public class ForecastApiClient {
     private static final class ForecastDataParsingException extends RuntimeException {
 
         public ForecastDataParsingException(String message, JsonProcessingException exception) {
+            super(message, exception);
+        }
+    }
+
+    private static final class AstronomyDataParsingException extends RuntimeException {
+
+        public AstronomyDataParsingException(String message, JsonProcessingException exception) {
             super(message, exception);
         }
     }

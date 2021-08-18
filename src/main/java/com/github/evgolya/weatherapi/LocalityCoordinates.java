@@ -1,4 +1,4 @@
-package com.github.evgolya.forecast;
+package com.github.evgolya.weatherapi;
 
 import java.util.Objects;
 
