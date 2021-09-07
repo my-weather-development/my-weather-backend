@@ -25,6 +25,10 @@
 
 ```https://ipstack.com/documentation```
 
+##### Country codes
+
+```https://countrycode.org/```
+
 ## Setup Vault
 Run vault for development: ```dev/vault/docker-compose.yml```
 Then go to container bash 
