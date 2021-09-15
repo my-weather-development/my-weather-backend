@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @ConfigurationProperties("weather-api")
 @Component
-public class WeatherApiKeyProvider {
+public class WeatherApiKeyProvider { // TODO: add key provider for Geocoding & Search API
 
     private String key;
 

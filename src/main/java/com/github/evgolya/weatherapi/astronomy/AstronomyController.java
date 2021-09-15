@@ -1,7 +1,7 @@
 package com.github.evgolya.weatherapi.astronomy;
 
 import com.github.evgolya.weatherapi.LocalityCoordinates;
-import com.github.evgolya.weatherapi.apiclient.ForecastApiClient;
+import com.github.evgolya.weatherapi.apiclient.ForecastDataProvider;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AstronomyController {
 
-    private final ForecastApiClient forecastApiClient;
+    private final ForecastDataProvider forecastDataProvider;
 
-    public AstronomyController(ForecastApiClient forecastApiClient) {
-        this.forecastApiClient = forecastApiClient;
+    public AstronomyController(ForecastDataProvider forecastDataProvider) {
+        this.forecastDataProvider = forecastDataProvider;
     }
 
     @PostMapping(path = "/astronomy", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -24,6 +24,6 @@ public class AstronomyController {
         return ResponseEntity
             .ok()
             .header("Access-Control-Allow-Origin", "*")
-            .body(forecastApiClient.getAstronomyData(localityCoordinates.getLatitude(),localityCoordinates.getLongitude()));
+            .body(forecastDataProvider.getAstronomyData(localityCoordinates.getLatitude(),localityCoordinates.getLongitude()));
     }
 }

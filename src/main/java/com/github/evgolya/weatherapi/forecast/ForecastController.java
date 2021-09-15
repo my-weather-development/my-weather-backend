@@ -1,7 +1,7 @@
 package com.github.evgolya.weatherapi.forecast;
 
 import com.github.evgolya.weatherapi.LocalityCoordinates;
-import com.github.evgolya.weatherapi.apiclient.ForecastApiClient;
+import com.github.evgolya.weatherapi.apiclient.ForecastDataProvider;
 import com.github.evgolya.weatherapi.forecast.currentweatherdto.CurrentWeatherDto;
 import com.github.evgolya.weatherapi.forecast.fullforecastdto.FullForecastDto;
 import org.springframework.http.MediaType;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ForecastController {
 
-    private final ForecastApiClient forecastApiClient;
+    private final ForecastDataProvider forecastDataProvider;
 
-    public ForecastController(ForecastApiClient forecastApiClient) {
-        this.forecastApiClient = forecastApiClient;
+    public ForecastController(ForecastDataProvider forecastDataProvider) {
+        this.forecastDataProvider = forecastDataProvider;
     }
 
     @GetMapping("/")
@@ -33,7 +33,7 @@ public class ForecastController {
         return ResponseEntity
             .ok()
             .header("Access-Control-Allow-Origin", "*")
-            .body(forecastApiClient.getCurrentWeatherByCoordinates(localityCoordinates.getLatitude(), localityCoordinates.getLongitude()));
+            .body(forecastDataProvider.getCurrentWeatherByCoordinates(localityCoordinates.getLatitude(), localityCoordinates.getLongitude()));
     }
 
     @PostMapping(path = "/forecast/{days}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -42,6 +42,6 @@ public class ForecastController {
         return ResponseEntity
             .ok()
             .header("Access-Control-Allow-Origin", "*")
-            .body(forecastApiClient.getForecastByCoordinates(days, localityCoordinates.getLatitude(), localityCoordinates.getLongitude()));
+            .body(forecastDataProvider.getForecastByCoordinates(days, localityCoordinates.getLatitude(), localityCoordinates.getLongitude()));
     }
 }

@@ -18,7 +18,7 @@ public final class CoordinatesConverter {
     }
 
     public static Double coordinateToDecimalDegree(double degree, double min, double sec) {
-        final double decimalDegrees = degree + min / 60 + sec / 3600;
+        final Double decimalDegrees = degree + min / 60 + sec / 3600;
         final DecimalFormat decimalFormat = new DecimalFormat(NUMBERS_AFTER_DOT);
         return Double.parseDouble(decimalFormat.format(decimalDegrees));
     }

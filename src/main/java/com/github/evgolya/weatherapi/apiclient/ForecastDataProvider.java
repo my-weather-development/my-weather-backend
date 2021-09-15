@@ -3,11 +3,9 @@ package com.github.evgolya.weatherapi.apiclient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.evgolya.vault.WeatherApiKeyProvider;
-import com.github.evgolya.weatherapi.WeatherApiConstants;
+import com.github.evgolya.weatherapi.ApiConstantsProvider;
 import com.github.evgolya.weatherapi.apiclient.urlbuilder.DaysUrlParameter;
-import com.github.evgolya.weatherapi.apiclient.urlbuilder.ForecastUrlBuilder;
 import com.github.evgolya.weatherapi.apiclient.urlbuilder.QueryUrlParameter;
-import com.github.evgolya.weatherapi.apiclient.urlbuilder.UrlParameter;
 import com.github.evgolya.weatherapi.astronomy.AstronomyDto;
 import com.github.evgolya.weatherapi.forecast.currentweatherdto.CurrentWeatherDto;
 import com.github.evgolya.weatherapi.forecast.fullforecastdto.FullForecastDto;
@@ -16,28 +14,28 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @Component
 @EnableConfigurationProperties(WeatherApiKeyProvider.class)
-public class ForecastApiClient {
+public class ForecastDataProvider {
 
-    private static final Logger logger = LoggerFactory.getLogger(ForecastApiClient.class);
-    private final HttpClient httpClient;
+    private static final Logger logger = LoggerFactory.getLogger(ForecastDataProvider.class);
     private final String apiKeyUrlParameter;
     private final ObjectMapper objectMapper;
+    private final HttpRequestSender httpRequestSender;
 
-    public ForecastApiClient(WeatherApiKeyProvider weatherApiKeyProvider) {
-        this.httpClient = HttpClient.newHttpClient();
+    public ForecastDataProvider(WeatherApiKeyProvider weatherApiKeyProvider, ObjectMapper objectMapper, HttpRequestSender httpRequestSender) {
+        this.httpRequestSender = httpRequestSender;
         this.apiKeyUrlParameter = weatherApiKeyProvider.getKey();
-        this.objectMapper = new ObjectMapper();
+        this.objectMapper = objectMapper;
     }
 
-    public CurrentWeatherDto getCurrentWeatherByCoordinates(double latitude, double longitude) {
-        final HttpResponse<String> response = getData(WeatherApiConstants.CURRENT_WEATHER_METHOD, new QueryUrlParameter(latitude, longitude));
+    public CurrentWeatherDto getCurrentWeatherByCoordinates(Double latitude, Double longitude) {
+        final HttpResponse<String> response = httpRequestSender.send(
+            ApiConstantsProvider.CURRENT_WEATHER_METHOD,
+            new QueryUrlParameter(latitude, longitude, apiKeyUrlParameter)
+        );
         try {
             return objectMapper.readValue(response.body(), CurrentWeatherDto.class);
         } catch (JsonProcessingException e) {
@@ -46,10 +44,10 @@ public class ForecastApiClient {
         }
     }
 
-    public FullForecastDto getForecastByCoordinates(int days, double latitude, double longitude) {
-        final HttpResponse<String> response = getData(
-            WeatherApiConstants.FORECAST_METHOD,
-            new QueryUrlParameter(latitude, longitude), new DaysUrlParameter(days)
+    public FullForecastDto getForecastByCoordinates(int days, Double latitude, Double longitude) {
+        final HttpResponse<String> response = httpRequestSender.send(
+            ApiConstantsProvider.FORECAST_METHOD,
+            new QueryUrlParameter(latitude, longitude, apiKeyUrlParameter), new DaysUrlParameter(days, apiKeyUrlParameter)
         );
         try {
             return objectMapper.readValue(response.body(), FullForecastDto.class);
@@ -70,12 +68,12 @@ public class ForecastApiClient {
     }
 
     public String getForecastForLocality(int days, String locality) {
-        // TODO: implement
+        // TODO: implement, locality = city/town/village etc.
         return null;
     }
 
     public String getCurrentWeatherForLocality(String locality) {
-        // TODO: implement
+        // TODO: implement, locality = city/town/village etc.
         return null;
     }
 
@@ -89,42 +87,16 @@ public class ForecastApiClient {
         return null;
     }
 
-    public AstronomyDto getAstronomyData(double latitude, double longitude) {
-        final HttpResponse<String> response = getData(WeatherApiConstants.ASTRONOMY_METHOD, new QueryUrlParameter(latitude, longitude));
+    public AstronomyDto getAstronomyData(Double latitude, Double longitude) {
+        final HttpResponse<String> response = httpRequestSender.send(
+            ApiConstantsProvider.ASTRONOMY_METHOD,
+            new QueryUrlParameter(latitude, longitude, apiKeyUrlParameter)
+        );
         try {
             return objectMapper.readValue(response.body(), AstronomyDto.class);
         } catch (JsonProcessingException e) {
             logger.error("JSON parsing exception for coordinates: lat {}, lon {}", latitude, longitude);
             throw new AstronomyDataParsingException("Cannot process astronomy data", e);
-        }
-    }
-
-    private HttpResponse<String> getData(String apiMethod, UrlParameter... parameters) {
-        final ForecastUrlBuilder forecastUrlBuilder = new ForecastUrlBuilder(apiMethod, apiKeyUrlParameter);
-        for (UrlParameter parameter : parameters) {
-            forecastUrlBuilder.addParameter(parameter);
-        }
-        return sendHttpRequest(forecastUrlBuilder.buildUrl());
-    }
-
-    public HttpResponse<String> sendHttpRequest(String url) {
-        try {
-            final HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .header("Content-Type", "application/json")
-                .GET()
-                .build();
-            return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            logger.error("Cannot send request to the Weather API");
-            throw new WeatherApiRequestException("Cannot send request to the Weather API", e);
-        }
-    }
-
-    private static final class WeatherApiRequestException extends RuntimeException {
-
-        private WeatherApiRequestException(String message, Exception exception) {
-            super(message, exception);
         }
     }
 

@@ -1,19 +1,17 @@
 package com.github.evgolya.weatherapi.apiclient.urlbuilder;
 
-import com.github.evgolya.weatherapi.WeatherApiConstants;
+import com.github.evgolya.weatherapi.ApiConstantsProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ForecastUrlBuilder {
+public class UrlBuilder {
 
     private final String apiMethod;
-    private final String apiKeyUrlParameter;
     private final List<UrlParameter> urlParameters = new ArrayList<>();
 
-    public ForecastUrlBuilder(String apiMethod, String apiKeyUrlParameter) {
+    public UrlBuilder(String apiMethod) {
         this.apiMethod = apiMethod;
-        this.apiKeyUrlParameter = apiKeyUrlParameter;
     }
 
     public void addParameter(UrlParameter urlParameter) {
@@ -22,10 +20,8 @@ public class ForecastUrlBuilder {
 
     public String buildUrl() {
         final StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(WeatherApiConstants.WEATHER_API_CONTEXT);
+        stringBuilder.append(ApiConstantsProvider.WEATHER_API_CONTEXT);
         stringBuilder.append(apiMethod);
-        stringBuilder.append("?key=");
-        stringBuilder.append(apiKeyUrlParameter);
 
         for (UrlParameter parameter : urlParameters) {
             stringBuilder.append(parameter.stringify());
