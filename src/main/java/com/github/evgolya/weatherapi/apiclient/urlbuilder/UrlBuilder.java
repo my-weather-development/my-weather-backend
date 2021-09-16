@@ -1,16 +1,17 @@
 package com.github.evgolya.weatherapi.apiclient.urlbuilder;
 
-import com.github.evgolya.weatherapi.ApiConstantsProvider;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UrlBuilder {
 
+    private final String apiContext;
     private final String apiMethod;
     private final List<UrlParameter> urlParameters = new ArrayList<>();
 
-    public UrlBuilder(String apiMethod) {
+    public UrlBuilder(String apiContext, String apiMethod) {
+        this.apiContext = apiContext;
         this.apiMethod = apiMethod;
     }
 
@@ -20,13 +21,15 @@ public class UrlBuilder {
 
     public String buildUrl() {
         final StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(ApiConstantsProvider.WEATHER_API_CONTEXT);
+        stringBuilder.append(apiContext);
         stringBuilder.append(apiMethod);
+        stringBuilder.append("?");
 
-        for (UrlParameter parameter : urlParameters) {
-            stringBuilder.append(parameter.stringify());
-        }
+        final String joinedUrlParameters = urlParameters.stream()
+            .map(UrlParameter::stringify)
+            .collect(Collectors.joining("&"));
 
+        stringBuilder.append(joinedUrlParameters);
         return stringBuilder.toString();
     }
 }

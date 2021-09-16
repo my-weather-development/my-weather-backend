@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GeocodeLocationDto {
+public class GeocodingLocationDto {
 
     private List<GeocodeLocationItemDto> items;
 

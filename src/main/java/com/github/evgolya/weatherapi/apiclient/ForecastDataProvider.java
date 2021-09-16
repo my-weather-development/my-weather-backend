@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.evgolya.vault.WeatherApiKeyProvider;
 import com.github.evgolya.weatherapi.ApiConstantsProvider;
 import com.github.evgolya.weatherapi.apiclient.urlbuilder.DaysUrlParameter;
+import com.github.evgolya.weatherapi.apiclient.urlbuilder.ForecastDataApiKeyUrlParameter;
 import com.github.evgolya.weatherapi.apiclient.urlbuilder.QueryUrlParameter;
 import com.github.evgolya.weatherapi.astronomy.AstronomyDto;
 import com.github.evgolya.weatherapi.forecast.currentweatherdto.CurrentWeatherDto;
@@ -21,20 +22,22 @@ import java.net.http.HttpResponse;
 public class ForecastDataProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(ForecastDataProvider.class);
-    private final String apiKeyUrlParameter;
+    private final String weatherApiKey;
     private final ObjectMapper objectMapper;
     private final HttpRequestSender httpRequestSender;
 
     public ForecastDataProvider(WeatherApiKeyProvider weatherApiKeyProvider, ObjectMapper objectMapper, HttpRequestSender httpRequestSender) {
         this.httpRequestSender = httpRequestSender;
-        this.apiKeyUrlParameter = weatherApiKeyProvider.getKey();
+        this.weatherApiKey = weatherApiKeyProvider.getKey();
         this.objectMapper = objectMapper;
     }
 
     public CurrentWeatherDto getCurrentWeatherByCoordinates(Double latitude, Double longitude) {
         final HttpResponse<String> response = httpRequestSender.send(
+            ApiConstantsProvider.WEATHER_API_CONTEXT,
             ApiConstantsProvider.CURRENT_WEATHER_METHOD,
-            new QueryUrlParameter(latitude, longitude, apiKeyUrlParameter)
+            new QueryUrlParameter(latitude, longitude),
+            new ForecastDataApiKeyUrlParameter(weatherApiKey)
         );
         try {
             return objectMapper.readValue(response.body(), CurrentWeatherDto.class);
@@ -46,8 +49,11 @@ public class ForecastDataProvider {
 
     public FullForecastDto getForecastByCoordinates(int days, Double latitude, Double longitude) {
         final HttpResponse<String> response = httpRequestSender.send(
+            ApiConstantsProvider.WEATHER_API_CONTEXT,
             ApiConstantsProvider.FORECAST_METHOD,
-            new QueryUrlParameter(latitude, longitude, apiKeyUrlParameter), new DaysUrlParameter(days, apiKeyUrlParameter)
+            new QueryUrlParameter(latitude, longitude),
+            new DaysUrlParameter(days),
+            new ForecastDataApiKeyUrlParameter(weatherApiKey)
         );
         try {
             return objectMapper.readValue(response.body(), FullForecastDto.class);
@@ -89,8 +95,10 @@ public class ForecastDataProvider {
 
     public AstronomyDto getAstronomyData(Double latitude, Double longitude) {
         final HttpResponse<String> response = httpRequestSender.send(
+            ApiConstantsProvider.WEATHER_API_CONTEXT,
             ApiConstantsProvider.ASTRONOMY_METHOD,
-            new QueryUrlParameter(latitude, longitude, apiKeyUrlParameter)
+            new QueryUrlParameter(latitude, longitude),
+            new ForecastDataApiKeyUrlParameter(weatherApiKey)
         );
         try {
             return objectMapper.readValue(response.body(), AstronomyDto.class);

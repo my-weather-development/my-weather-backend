@@ -3,9 +3,10 @@ package com.github.evgolya.geolocationapi;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.evgolya.geolocationapi.address.SearchedLocality;
-import com.github.evgolya.geolocationapi.dto.GeocodeLocationDto;
+import com.github.evgolya.geolocationapi.dto.GeocodingLocationDto;
 import com.github.evgolya.weatherapi.ApiConstantsProvider;
 import com.github.evgolya.weatherapi.apiclient.HttpRequestSender;
+import com.github.evgolya.weatherapi.apiclient.urlbuilder.GeoApiKeyUrlParameter;
 import com.github.evgolya.weatherapi.apiclient.urlbuilder.GeoQueryUrlParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,30 +19,32 @@ public class GeocodingAndSearchApiClient {
 
     private static final Logger logger = LoggerFactory.getLogger(GeocodingAndSearchApiClient.class);
     private final HttpRequestSender httpRequestSender;
-    private final String apiKeyUrlParameter;
+    private final String geoCodingApiKey;
     private final ObjectMapper objectMapper;
 
     public GeocodingAndSearchApiClient(HttpRequestSender httpRequestSender, ObjectMapper objectMapper) {
         this.httpRequestSender = httpRequestSender;
         this.objectMapper = objectMapper;
         // TODO: extract key to vault
-        this.apiKeyUrlParameter = "";
+        this.geoCodingApiKey = "";
     }
 
-    public GeocodeLocationDto getCoordinatesByLocality(SearchedLocality searchedLocality) {
+    public GeocodingLocationDto getCoordinatesByLocality(SearchedLocality searchedLocality) {
         final HttpResponse<String> response = httpRequestSender.send(
+            ApiConstantsProvider.GEOCODE_API_CONTEXT,
             ApiConstantsProvider.GEOCODE_METHOD,
-            new GeoQueryUrlParameter(searchedLocality, apiKeyUrlParameter)
+            new GeoQueryUrlParameter(searchedLocality),
+            new GeoApiKeyUrlParameter(geoCodingApiKey)
         );
         try {
-            return objectMapper.readValue(response.body(), GeocodeLocationDto.class);
+            return objectMapper.readValue(response.body(), GeocodingLocationDto.class);
         } catch (JsonProcessingException e) {
             logger.error("JSON parsing exception for locality: {}, {}", searchedLocality.getCountry(), searchedLocality.getLocality());
             throw new LocalityParsingException("Cannot process locality data", e);
         }
     }
 
-    public GeocodeLocationDto getCoordinatesByLocality(SearchedLocality searchedLocality, String ip) {
+    public GeocodingLocationDto getCoordinatesByLocality(SearchedLocality searchedLocality, String ip) {
         // TODO: implement
         return null;
     }

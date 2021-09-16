@@ -21,8 +21,8 @@ public class HttpRequestSender {
         this.httpClient = HttpClient.newHttpClient();
     }
 
-    public HttpResponse<String> send(String apiMethod, UrlParameter... parameters) {
-        final UrlBuilder urlBuilder = new UrlBuilder(apiMethod);
+    public HttpResponse<String> send(String apiContext, String apiMethod, UrlParameter... parameters) {
+        final UrlBuilder urlBuilder = new UrlBuilder(apiContext, apiMethod);
         for (UrlParameter parameter : parameters) {
             urlBuilder.addParameter(parameter);
         }
