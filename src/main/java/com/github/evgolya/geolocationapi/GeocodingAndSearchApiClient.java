@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.evgolya.geolocationapi.address.SearchedLocality;
 import com.github.evgolya.geolocationapi.dto.GeocodingLocationDto;
+import com.github.evgolya.vault.GeocodingAndSearchApiKeyProvider;
 import com.github.evgolya.weatherapi.ApiConstantsProvider;
 import com.github.evgolya.weatherapi.apiclient.HttpRequestSender;
 import com.github.evgolya.weatherapi.apiclient.urlbuilder.GeoApiKeyUrlParameter;
@@ -22,11 +23,14 @@ public class GeocodingAndSearchApiClient {
     private final String geoCodingApiKey;
     private final ObjectMapper objectMapper;
 
-    public GeocodingAndSearchApiClient(HttpRequestSender httpRequestSender, ObjectMapper objectMapper) {
+    public GeocodingAndSearchApiClient(
+        HttpRequestSender httpRequestSender,
+        ObjectMapper objectMapper,
+        GeocodingAndSearchApiKeyProvider geocodingAndSearchApiKeyProvider
+    ) {
         this.httpRequestSender = httpRequestSender;
         this.objectMapper = objectMapper;
-        // TODO: extract key to vault
-        this.geoCodingApiKey = "";
+        this.geoCodingApiKey = geocodingAndSearchApiKeyProvider.getKey();
     }
 
     public GeocodingLocationDto getCoordinatesByLocality(SearchedLocality searchedLocality) {

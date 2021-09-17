@@ -3,9 +3,9 @@ package com.github.evgolya.vault;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@ConfigurationProperties("weather-api")
+@ConfigurationProperties("geocoding-and-search-api")
 @Component
-public class WeatherApiKeyProvider {
+public class GeocodingAndSearchApiKeyProvider {
 
     private String key;
 
