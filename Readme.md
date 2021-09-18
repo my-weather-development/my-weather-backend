@@ -44,7 +44,7 @@ and run follow commands
 And then, configure Vault for Spring Boot. Enjoy :)
 You can use Vault UI for clarity (see port mapping in the docker-compose.yml)
 
-From more details see guides and Vault docs:
+For more details see guides and Vault docs:
 
 ```https://spring.io/guides/gs/vault-config/```
 
