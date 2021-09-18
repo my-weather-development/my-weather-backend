@@ -53,3 +53,7 @@ From more details see guides and Vault docs:
 ```https://hub.docker.com/_/vault```
 
 ```https://www.vaultproject.io/docs```
+
+## Spring with dockerized Vault in PROD mode:
+
+###### TODO: will write at 2021/09/19 
