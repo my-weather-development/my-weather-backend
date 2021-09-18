@@ -25,4 +25,7 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-/dev/vault/vault/*
+/dev/vault/vault/data
+/dev/vault/vault/file
+/dev/vault/vault/logs
+/dev/vault/vault/policies
