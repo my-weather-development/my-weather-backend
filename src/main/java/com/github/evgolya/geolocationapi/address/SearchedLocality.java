@@ -98,7 +98,7 @@ public class SearchedLocality {
     }
 
     private void concat(String str, StringBuilder stringBuilder) {
-        if (nonNull(str)) {
+        if (nonNull(str) && !str.isEmpty() && !str.isBlank()) {
             stringBuilder.append(str).append(",");
         }
     }
