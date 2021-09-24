@@ -3,6 +3,7 @@ package com.github.evgolya.weatherapi.forecast;
 import com.github.evgolya.geolocationapi.address.SearchedLocality;
 import com.github.evgolya.weatherapi.LocalityCoordinates;
 import com.github.evgolya.weatherapi.apiclient.ExtendedCurrentWeatherDto;
+import com.github.evgolya.weatherapi.apiclient.ExtendedFullForecastDto;
 import com.github.evgolya.weatherapi.apiclient.ForecastDataProvider;
 import com.github.evgolya.weatherapi.forecast.currentweatherdto.CurrentWeatherDto;
 import com.github.evgolya.weatherapi.forecast.fullforecastdto.FullForecastDto;
@@ -55,5 +56,14 @@ public class ForecastController {
             .ok()
             .header("Access-Control-Allow-Origin", "*")
             .body(forecastDataProvider.getCurrentWeatherForLocality(searchedLocality));
+    }
+
+    @PostMapping(path = "/forecast/locality/{days}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<ExtendedFullForecastDto> getForecastForLocality(@PathVariable Integer days, @RequestBody SearchedLocality searchedLocality) {
+        return ResponseEntity
+            .ok()
+            .header("Access-Control-Allow-Origin", "*")
+            .body(forecastDataProvider.getForecastForLocality(days, searchedLocality));
     }
 }

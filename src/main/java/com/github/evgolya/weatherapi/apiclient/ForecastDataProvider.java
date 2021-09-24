@@ -22,6 +22,8 @@ import org.springframework.stereotype.Component;
 
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 @Component
 @EnableConfigurationProperties(WeatherApiKeyProvider.class)
@@ -46,23 +48,25 @@ public class ForecastDataProvider {
     }
 
     public ExtendedCurrentWeatherDto getCurrentWeatherForLocality(SearchedLocality searchedLocality) {
-        final GeocodingLocationDto geocodingLocationDto = geocodingAndSearchApiClient.getCoordinatesByLocality(searchedLocality);
-
-        final List<GeocodeLocationItemDto> items = geocodingLocationDto.getItems();
-        if (items.isEmpty()) {
-            return new ExtendedCurrentWeatherDto(new CurrentWeatherDto(), new GeocodeLocationItemDto());
-        }
-
-        // TODO: find & handle case when the list of items contains more than one item
-        final GeocodeLocationItemDto geocodeLocationItemDto = items.get(0);
-        final Coordinates coordinates = geocodeLocationItemDto.getCoordinates();
-        final CurrentWeatherDto currentWeatherDto = getCurrentWeatherByCoordinates(coordinates.getLatitude(), coordinates.getLongitude());
-        return new ExtendedCurrentWeatherDto(currentWeatherDto, geocodeLocationItemDto);
+        return applyGeocodingLocation(
+            searchedLocality,
+            () -> new ExtendedCurrentWeatherDto(new CurrentWeatherDto(), new GeocodeLocationItemDto()),
+            (coordinates, geocodeLocationDto) -> {
+                final CurrentWeatherDto currentWeatherDto = getCurrentWeatherByCoordinates(coordinates.getLatitude(), coordinates.getLongitude());
+                return new ExtendedCurrentWeatherDto(currentWeatherDto, geocodeLocationDto);
+            }
+        );
     }
 
-    public String getForecastForLocality(int days, SearchedLocality searchedLocality) {
-        // TODO: implement, locality = city/town/village etc.
-        return null;
+    public ExtendedFullForecastDto getForecastForLocality(Integer days, SearchedLocality searchedLocality) {
+        return applyGeocodingLocation(
+            searchedLocality,
+            () -> new ExtendedFullForecastDto(new FullForecastDto(), new GeocodeLocationItemDto()),
+            (coordinates, geocodeLocationDto) -> {
+                final FullForecastDto fullForecastDto = getForecastByCoordinates(days, coordinates.getLatitude(), coordinates.getLongitude());
+                return new ExtendedFullForecastDto(fullForecastDto, geocodeLocationDto);
+            }
+        );
     }
 
     public CurrentWeatherDto getCurrentWeatherByCoordinates(Double latitude, Double longitude) {
@@ -80,7 +84,7 @@ public class ForecastDataProvider {
         }
     }
 
-    public FullForecastDto getForecastByCoordinates(int days, Double latitude, Double longitude) {
+    public FullForecastDto getForecastByCoordinates(Integer days, Double latitude, Double longitude) {
         final HttpResponse<String> response = httpRequestSender.send(
             ApiConstantsProvider.WEATHER_API_CONTEXT,
             ApiConstantsProvider.FORECAST_METHOD,
@@ -96,7 +100,7 @@ public class ForecastDataProvider {
         }
     }
 
-    public String getForecastForLocalityByIP(int days, String ip) {
+    public String getForecastForLocalityByIP(Integer days, String ip) {
         // TODO: implement
         return null;
     }
@@ -119,6 +123,19 @@ public class ForecastDataProvider {
             logger.error("JSON parsing exception for coordinates: lat {}, lon {}", latitude, longitude);
             throw new AstronomyDataParsingException("Cannot process astronomy data", e);
         }
+    }
+
+    private <T> T applyGeocodingLocation(SearchedLocality searchedLocality, Supplier<T> emptyDto, BiFunction<Coordinates, GeocodeLocationItemDto, T> getForecastData) {
+        final GeocodingLocationDto geocodingLocationDto = geocodingAndSearchApiClient.getCoordinatesByLocality(searchedLocality);
+        final List<GeocodeLocationItemDto> items = geocodingLocationDto.getItems();
+        if (items.isEmpty()) {
+            return emptyDto.get();
+        }
+        // TODO: find & handle case when the list of items contains more than one item
+        final GeocodeLocationItemDto geocodeLocationItemDto = items.get(0);
+        final Coordinates coordinates = geocodeLocationItemDto.getCoordinates();
+
+        return getForecastData.apply(coordinates, geocodeLocationItemDto);
     }
 
     private static final class ForecastDataParsingException extends RuntimeException {
