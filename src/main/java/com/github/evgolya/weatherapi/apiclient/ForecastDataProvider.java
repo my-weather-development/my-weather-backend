@@ -2,6 +2,11 @@ package com.github.evgolya.weatherapi.apiclient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.evgolya.geolocationapi.GeocodingAndSearchApiClient;
+import com.github.evgolya.geolocationapi.address.SearchedLocality;
+import com.github.evgolya.geolocationapi.dto.Coordinates;
+import com.github.evgolya.geolocationapi.dto.GeocodeLocationItemDto;
+import com.github.evgolya.geolocationapi.dto.GeocodingLocationDto;
 import com.github.evgolya.vault.WeatherApiKeyProvider;
 import com.github.evgolya.weatherapi.ApiConstantsProvider;
 import com.github.evgolya.weatherapi.apiclient.urlbuilder.DaysUrlParameter;
@@ -16,6 +21,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Component;
 
 import java.net.http.HttpResponse;
+import java.util.List;
 
 @Component
 @EnableConfigurationProperties(WeatherApiKeyProvider.class)
@@ -25,11 +31,38 @@ public class ForecastDataProvider {
     private final String weatherApiKey;
     private final ObjectMapper objectMapper;
     private final HttpRequestSender httpRequestSender;
+    private final GeocodingAndSearchApiClient geocodingAndSearchApiClient;
 
-    public ForecastDataProvider(WeatherApiKeyProvider weatherApiKeyProvider, ObjectMapper objectMapper, HttpRequestSender httpRequestSender) {
+    public ForecastDataProvider(
+        WeatherApiKeyProvider weatherApiKeyProvider,
+        ObjectMapper objectMapper,
+        HttpRequestSender httpRequestSender,
+        GeocodingAndSearchApiClient geocodingAndSearchApiClient
+    ) {
         this.httpRequestSender = httpRequestSender;
+        this.geocodingAndSearchApiClient = geocodingAndSearchApiClient;
         this.weatherApiKey = weatherApiKeyProvider.getKey();
         this.objectMapper = objectMapper;
+    }
+
+    public ExtendedCurrentWeatherDto getCurrentWeatherForLocality(SearchedLocality searchedLocality) {
+        final GeocodingLocationDto geocodingLocationDto = geocodingAndSearchApiClient.getCoordinatesByLocality(searchedLocality);
+
+        final List<GeocodeLocationItemDto> items = geocodingLocationDto.getItems();
+        if (items.isEmpty()) {
+            return new ExtendedCurrentWeatherDto(new CurrentWeatherDto(), new GeocodeLocationItemDto());
+        }
+
+        // TODO: find & handle case when the list of items contains more than one item
+        final GeocodeLocationItemDto geocodeLocationItemDto = items.get(0);
+        final Coordinates coordinates = geocodeLocationItemDto.getCoordinates();
+        final CurrentWeatherDto currentWeatherDto = getCurrentWeatherByCoordinates(coordinates.getLatitude(), coordinates.getLongitude());
+        return new ExtendedCurrentWeatherDto(currentWeatherDto, geocodeLocationItemDto);
+    }
+
+    public String getForecastForLocality(int days, SearchedLocality searchedLocality) {
+        // TODO: implement, locality = city/town/village etc.
+        return null;
     }
 
     public CurrentWeatherDto getCurrentWeatherByCoordinates(Double latitude, Double longitude) {
@@ -61,26 +94,6 @@ public class ForecastDataProvider {
             logger.error("JSON parsing exception for coordinates: lat {}, lon {}", latitude, longitude);
             throw new ForecastDataParsingException("Cannot process forecast data", e);
         }
-    }
-
-    public String getForecastByCoordinates(int days, String latitude, String longitude) {
-        // TODO: implement
-        return null;
-    }
-
-    public String getCurrentWeatherByCoordinates(String latitude, String longitude) {
-        // TODO: implement
-        return null;
-    }
-
-    public String getForecastForLocality(int days, String locality) {
-        // TODO: implement, locality = city/town/village etc.
-        return null;
-    }
-
-    public String getCurrentWeatherForLocality(String locality) {
-        // TODO: implement, locality = city/town/village etc.
-        return null;
     }
 
     public String getForecastForLocalityByIP(int days, String ip) {

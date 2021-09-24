@@ -15,7 +15,7 @@
 ##### Search lat, lon by city
 
 ```https://positionstack.com/documentation```
-```https://developer.here.com/blog/how-to-use-geocoding-in-java-with-the-here-geocoding-search-api```
+```https://developer.here.com/blog/how-to-use-geocoding-in-java-with-the-here-geocoding-search-api``` (using)
 
 ##### Search city by lat, lon
 
