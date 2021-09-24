@@ -1,5 +1,6 @@
 package com.github.evgolya.geolocationapi.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,6 +11,7 @@ public class Coordinates {
     private Double latitude;
 
     @JsonProperty("lon")
+    @JsonAlias("lng")
     private Double longitude;
 
     public Double getLatitude() {
