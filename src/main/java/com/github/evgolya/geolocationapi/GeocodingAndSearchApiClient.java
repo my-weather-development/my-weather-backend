@@ -8,6 +8,7 @@ import com.github.evgolya.vault.GeocodingAndSearchApiKeyProvider;
 import com.github.evgolya.weatherapi.ApiConstantsProvider;
 import com.github.evgolya.weatherapi.apiclient.HttpRequestSender;
 import com.github.evgolya.weatherapi.apiclient.urlbuilder.GeoApiKeyUrlParameter;
+import com.github.evgolya.weatherapi.apiclient.urlbuilder.GeoLangUrlParameter;
 import com.github.evgolya.weatherapi.apiclient.urlbuilder.GeoQueryUrlParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import java.net.http.HttpResponse;
 @Component
 public class GeocodingAndSearchApiClient {
 
+    private static final String EN_LANG = "en";
     private static final Logger logger = LoggerFactory.getLogger(GeocodingAndSearchApiClient.class);
     private final HttpRequestSender httpRequestSender;
     private final String geoCodingApiKey;
@@ -38,7 +40,8 @@ public class GeocodingAndSearchApiClient {
             ApiConstantsProvider.GEOCODE_API_CONTEXT,
             ApiConstantsProvider.GEOCODE_METHOD,
             new GeoQueryUrlParameter(searchedLocality),
-            new GeoApiKeyUrlParameter(geoCodingApiKey)
+            new GeoApiKeyUrlParameter(geoCodingApiKey),
+            new GeoLangUrlParameter(EN_LANG) // TODO: make dynamically
         );
         try {
             return objectMapper.readValue(response.body(), GeocodingLocationDto.class);
