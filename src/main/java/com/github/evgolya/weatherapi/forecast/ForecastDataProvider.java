@@ -104,16 +104,6 @@ public class ForecastDataProvider {
         }
     }
 
-    public String getForecastForLocalityByIP(Integer days, String ip) {
-        // TODO: implement
-        return null;
-    }
-
-    public String getCurrentWeatherForLocalityByIP(String ip) {
-        // TODO: implement
-        return null;
-    }
-
     public AstronomyDto getAstronomyData(Double latitude, Double longitude) {
         final HttpResponse<String> response = httpRequestSender.send(
             ApiConstantsProvider.WEATHER_API_CONTEXT,

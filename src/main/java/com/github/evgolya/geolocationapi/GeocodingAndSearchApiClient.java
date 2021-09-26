@@ -51,11 +51,6 @@ public class GeocodingAndSearchApiClient {
         }
     }
 
-    public GeocodingLocationDto getCoordinatesByLocality(SearchedLocality searchedLocality, String ip) {
-        // TODO: implement
-        return null;
-    }
-
     private static final class LocalityParsingException extends RuntimeException {
 
         public LocalityParsingException(String message, Exception exception) {

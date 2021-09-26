@@ -5,16 +5,11 @@ import static java.util.Objects.nonNull;
 public class SearchedLocality {
 
     private static final String SPACE_HTTP_ENTITY = "%20";
-    static final String REPLACEABLE_TARGET = " ";
+    private static final String REPLACEABLE_TARGET = " ";
 
     private String country;
     private String state;
     private String locality;
-    private String street;
-    private Integer buildingNumber;
-    private String district;
-    private Integer apartment;
-    private Integer postalCode;
 
     public String getCountry() {
         return country;
@@ -40,46 +35,6 @@ public class SearchedLocality {
         this.locality = locality;
     }
 
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public Integer getBuildingNumber() {
-        return buildingNumber;
-    }
-
-    public void setBuildingNumber(Integer buildingNumber) {
-        this.buildingNumber = buildingNumber;
-    }
-
-    public String getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    public Integer getApartment() {
-        return apartment;
-    }
-
-    public void setApartment(Integer apartment) {
-        this.apartment = apartment;
-    }
-
-    public Integer getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(Integer postalCode) {
-        this.postalCode = postalCode;
-    }
-
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder();
@@ -87,18 +42,7 @@ public class SearchedLocality {
         concat(country.replace(REPLACEABLE_TARGET, SPACE_HTTP_ENTITY), stringBuilder);
         concat(state.replace(REPLACEABLE_TARGET, SPACE_HTTP_ENTITY), stringBuilder);
         concat(locality.replace(REPLACEABLE_TARGET, SPACE_HTTP_ENTITY), stringBuilder);
-        concat(street.replace(REPLACEABLE_TARGET, SPACE_HTTP_ENTITY), stringBuilder);
-        concat(district.replace(REPLACEABLE_TARGET, SPACE_HTTP_ENTITY), stringBuilder);
-        addressNumberChecking(buildingNumber, stringBuilder);
-        addressNumberChecking(apartment, stringBuilder);
-        addressNumberChecking(postalCode, stringBuilder);
         return stringBuilder.toString();
-    }
-
-    private void addressNumberChecking(Integer number, StringBuilder stringBuilder) {
-        if (nonNull(number) && number > 0) {
-            concat(String.valueOf(number), stringBuilder);
-        }
     }
 
     private void concat(String str, StringBuilder stringBuilder) {
