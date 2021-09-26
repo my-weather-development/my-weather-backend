@@ -2,10 +2,9 @@ package com.github.evgolya.weatherapi.forecast;
 
 import com.github.evgolya.geolocationapi.address.SearchedLocality;
 import com.github.evgolya.weatherapi.LocalityCoordinates;
-import com.github.evgolya.weatherapi.apiclient.ExtendedCurrentWeatherDto;
-import com.github.evgolya.weatherapi.apiclient.ExtendedFullForecastDto;
-import com.github.evgolya.weatherapi.apiclient.ForecastDataProvider;
 import com.github.evgolya.weatherapi.forecast.currentweatherdto.CurrentWeatherDto;
+import com.github.evgolya.weatherapi.forecast.currentweatherdto.ExtendedCurrentWeatherDto;
+import com.github.evgolya.weatherapi.forecast.fullforecastdto.ExtendedFullForecastDto;
 import com.github.evgolya.weatherapi.forecast.fullforecastdto.FullForecastDto;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +25,7 @@ public class ForecastController {
         this.forecastDataProvider = forecastDataProvider;
     }
 
-    @GetMapping("/")
+    @GetMapping("/health-check")
     public String healthCheck() {
         return "Server is available";
     }

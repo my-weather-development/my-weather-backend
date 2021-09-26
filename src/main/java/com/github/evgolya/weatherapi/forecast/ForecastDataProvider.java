@@ -1,19 +1,22 @@
-package com.github.evgolya.weatherapi.apiclient;
+package com.github.evgolya.weatherapi.forecast;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.evgolya.ApiConstantsProvider;
 import com.github.evgolya.geolocationapi.GeocodingAndSearchApiClient;
 import com.github.evgolya.geolocationapi.address.SearchedLocality;
 import com.github.evgolya.geolocationapi.dto.Coordinates;
 import com.github.evgolya.geolocationapi.dto.GeocodeLocationItemDto;
 import com.github.evgolya.geolocationapi.dto.GeocodingLocationDto;
 import com.github.evgolya.vault.WeatherApiKeyProvider;
-import com.github.evgolya.weatherapi.ApiConstantsProvider;
+import com.github.evgolya.weatherapi.apiclient.HttpRequestSender;
 import com.github.evgolya.weatherapi.apiclient.urlbuilder.DaysUrlParameter;
 import com.github.evgolya.weatherapi.apiclient.urlbuilder.ForecastDataApiKeyUrlParameter;
 import com.github.evgolya.weatherapi.apiclient.urlbuilder.QueryUrlParameter;
 import com.github.evgolya.weatherapi.astronomy.AstronomyDto;
 import com.github.evgolya.weatherapi.forecast.currentweatherdto.CurrentWeatherDto;
+import com.github.evgolya.weatherapi.forecast.currentweatherdto.ExtendedCurrentWeatherDto;
+import com.github.evgolya.weatherapi.forecast.fullforecastdto.ExtendedFullForecastDto;
 import com.github.evgolya.weatherapi.forecast.fullforecastdto.FullForecastDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +29,7 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 @Component
+// TODO: move to MyWeatherConfiguration configuration class
 @EnableConfigurationProperties(WeatherApiKeyProvider.class)
 public class ForecastDataProvider {
 
@@ -48,7 +52,7 @@ public class ForecastDataProvider {
     }
 
     public ExtendedCurrentWeatherDto getCurrentWeatherForLocality(SearchedLocality searchedLocality) {
-        return applyGeocodingLocation(
+        return getWeatherForecastForCoordinates(
             searchedLocality,
             () -> new ExtendedCurrentWeatherDto(new CurrentWeatherDto(), new GeocodeLocationItemDto()),
             (coordinates, geocodeLocationDto) -> {
@@ -59,7 +63,7 @@ public class ForecastDataProvider {
     }
 
     public ExtendedFullForecastDto getForecastForLocality(Integer days, SearchedLocality searchedLocality) {
-        return applyGeocodingLocation(
+        return getWeatherForecastForCoordinates(
             searchedLocality,
             () -> new ExtendedFullForecastDto(new FullForecastDto(), new GeocodeLocationItemDto()),
             (coordinates, geocodeLocationDto) -> {
@@ -80,7 +84,7 @@ public class ForecastDataProvider {
             return objectMapper.readValue(response.body(), CurrentWeatherDto.class);
         } catch (JsonProcessingException e) {
             logger.error("JSON parsing exception for coordinates: lat {}, lon {}", latitude, longitude);
-            throw new ForecastDataParsingException("Cannot process current weather data", e);
+            throw new APIResponseParsingException("Cannot process current weather data", e);
         }
     }
 
@@ -96,7 +100,7 @@ public class ForecastDataProvider {
             return objectMapper.readValue(response.body(), FullForecastDto.class);
         } catch (JsonProcessingException e) {
             logger.error("JSON parsing exception for coordinates: lat {}, lon {}", latitude, longitude);
-            throw new ForecastDataParsingException("Cannot process forecast data", e);
+            throw new APIResponseParsingException("Cannot process forecast data", e);
         }
     }
 
@@ -121,11 +125,11 @@ public class ForecastDataProvider {
             return objectMapper.readValue(response.body(), AstronomyDto.class);
         } catch (JsonProcessingException e) {
             logger.error("JSON parsing exception for coordinates: lat {}, lon {}", latitude, longitude);
-            throw new AstronomyDataParsingException("Cannot process astronomy data", e);
+            throw new APIResponseParsingException("Cannot process astronomy data", e);
         }
     }
 
-    private <T> T applyGeocodingLocation(SearchedLocality searchedLocality, Supplier<T> emptyDto, BiFunction<Coordinates, GeocodeLocationItemDto, T> getForecastData) {
+    private <T> T getWeatherForecastForCoordinates(SearchedLocality searchedLocality, Supplier<T> emptyDto, BiFunction<Coordinates, GeocodeLocationItemDto, T> getForecastData) {
         final GeocodingLocationDto geocodingLocationDto = geocodingAndSearchApiClient.getCoordinatesByLocality(searchedLocality);
         final List<GeocodeLocationItemDto> items = geocodingLocationDto.getItems();
         if (items.isEmpty()) {
@@ -138,16 +142,9 @@ public class ForecastDataProvider {
         return getForecastData.apply(coordinates, geocodeLocationItemDto);
     }
 
-    private static final class ForecastDataParsingException extends RuntimeException {
+    private static final class APIResponseParsingException extends RuntimeException {
 
-        public ForecastDataParsingException(String message, JsonProcessingException exception) {
-            super(message, exception);
-        }
-    }
-
-    private static final class AstronomyDataParsingException extends RuntimeException {
-
-        public AstronomyDataParsingException(String message, JsonProcessingException exception) {
+        public APIResponseParsingException(String message, JsonProcessingException exception) {
             super(message, exception);
         }
     }

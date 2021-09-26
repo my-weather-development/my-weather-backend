@@ -1,7 +1,6 @@
-package com.github.evgolya.weatherapi.apiclient;
+package com.github.evgolya.weatherapi.forecast.fullforecastdto;
 
 import com.github.evgolya.geolocationapi.dto.GeocodeLocationItemDto;
-import com.github.evgolya.weatherapi.forecast.fullforecastdto.FullForecastDto;
 
 public class ExtendedFullForecastDto {
 

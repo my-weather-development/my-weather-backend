@@ -1,7 +1,7 @@
 package com.github.evgolya.weatherapi.astronomy;
 
 import com.github.evgolya.weatherapi.LocalityCoordinates;
-import com.github.evgolya.weatherapi.apiclient.ForecastDataProvider;
+import com.github.evgolya.weatherapi.forecast.ForecastDataProvider;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -21,9 +21,9 @@ public class UrlBuilder {
 
     public String buildUrl() {
         final StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(apiContext);
-        stringBuilder.append(apiMethod);
-        stringBuilder.append("?");
+        stringBuilder.append(apiContext)
+            .append(apiMethod)
+            .append("?");
 
         final String joinedUrlParameters = urlParameters.stream()
             .map(UrlParameter::stringify)

@@ -4,6 +4,9 @@ import static java.util.Objects.nonNull;
 
 public class SearchedLocality {
 
+    private static final String SPACE_HTTP_ENTITY = "%20";
+    static final String REPLACEABLE_TARGET = " ";
+
     private String country;
     private String state;
     private String locality;
@@ -80,11 +83,12 @@ public class SearchedLocality {
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder();
-        concat(country, stringBuilder);
-        concat(state, stringBuilder);
-        concat(locality, stringBuilder);
-        concat(street, stringBuilder);
-        concat(district, stringBuilder);
+        // TODO: Come up with better solution instead replace() method
+        concat(country.replace(REPLACEABLE_TARGET, SPACE_HTTP_ENTITY), stringBuilder);
+        concat(state.replace(REPLACEABLE_TARGET, SPACE_HTTP_ENTITY), stringBuilder);
+        concat(locality.replace(REPLACEABLE_TARGET, SPACE_HTTP_ENTITY), stringBuilder);
+        concat(street.replace(REPLACEABLE_TARGET, SPACE_HTTP_ENTITY), stringBuilder);
+        concat(district.replace(REPLACEABLE_TARGET, SPACE_HTTP_ENTITY), stringBuilder);
         addressNumberChecking(buildingNumber, stringBuilder);
         addressNumberChecking(apartment, stringBuilder);
         addressNumberChecking(postalCode, stringBuilder);
