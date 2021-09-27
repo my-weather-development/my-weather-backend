@@ -1,10 +1,10 @@
-package com.github.evgolya.geolocationapi.address;
+package com.github.evgolya.geolocationapi.locality;
 
 import static java.util.Objects.nonNull;
 
 public class SearchedLocality {
 
-    private static final String SPACE_HTTP_ENTITY = "%20";
+    private static final String URL_ENCODED_SPACE = "%20";
     private static final String REPLACEABLE_TARGET = " ";
 
     private String country;
@@ -35,18 +35,30 @@ public class SearchedLocality {
         this.locality = locality;
     }
 
+    public boolean isEmpty() {
+        return nonNull(country) && country.isEmpty() ||
+            nonNull(state) && state.isEmpty() ||
+            nonNull(locality) && locality.isEmpty();
+    }
+
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder();
-        // TODO: Come up with better solution instead replace() method
-        concat(country.replace(REPLACEABLE_TARGET, SPACE_HTTP_ENTITY), stringBuilder);
-        concat(state.replace(REPLACEABLE_TARGET, SPACE_HTTP_ENTITY), stringBuilder);
-        concat(locality.replace(REPLACEABLE_TARGET, SPACE_HTTP_ENTITY), stringBuilder);
+        convertSpaceToUTF8Format(country, stringBuilder);
+        convertSpaceToUTF8Format(state, stringBuilder);
+        convertSpaceToUTF8Format(locality, stringBuilder);
         return stringBuilder.toString();
     }
 
+    private void convertSpaceToUTF8Format(String str, StringBuilder stringBuilder) {
+        if (nonNull(str)) {
+            // TODO: Come up with better solution instead replace() method
+            concat(str.replace(REPLACEABLE_TARGET, URL_ENCODED_SPACE), stringBuilder);
+        }
+    }
+
     private void concat(String str, StringBuilder stringBuilder) {
-        if (nonNull(str) && !str.isEmpty() && !str.isBlank()) {
+        if (!str.isEmpty() && !str.isBlank()) {
             stringBuilder.append(str).append(",");
         }
     }

@@ -3,16 +3,17 @@ package com.github.evgolya.weatherapi.forecast;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.evgolya.ApiConstantsProvider;
+import com.github.evgolya.exception.APIResponseParsingException;
 import com.github.evgolya.geolocationapi.GeocodingAndSearchApiClient;
-import com.github.evgolya.geolocationapi.address.SearchedLocality;
 import com.github.evgolya.geolocationapi.dto.Coordinates;
 import com.github.evgolya.geolocationapi.dto.GeocodeLocationItemDto;
 import com.github.evgolya.geolocationapi.dto.GeocodingLocationDto;
+import com.github.evgolya.geolocationapi.locality.SearchedLocality;
 import com.github.evgolya.vault.WeatherApiKeyProvider;
 import com.github.evgolya.weatherapi.apiclient.HttpRequestSender;
 import com.github.evgolya.weatherapi.apiclient.urlbuilder.DaysUrlParameter;
-import com.github.evgolya.weatherapi.apiclient.urlbuilder.ForecastDataApiKeyUrlParameter;
 import com.github.evgolya.weatherapi.apiclient.urlbuilder.QueryUrlParameter;
+import com.github.evgolya.weatherapi.apiclient.urlbuilder.apikey.ForecastDataApiKeyUrlParameter;
 import com.github.evgolya.weatherapi.astronomy.AstronomyDto;
 import com.github.evgolya.weatherapi.forecast.currentweatherdto.CurrentWeatherDto;
 import com.github.evgolya.weatherapi.forecast.currentweatherdto.ExtendedCurrentWeatherDto;
@@ -47,7 +48,7 @@ public class ForecastDataProvider {
     ) {
         this.httpRequestSender = httpRequestSender;
         this.geocodingAndSearchApiClient = geocodingAndSearchApiClient;
-        this.weatherApiKey = weatherApiKeyProvider.getKey();
+        this.weatherApiKey = System.getenv().getOrDefault("WEATHER_API_KEY", weatherApiKeyProvider.getKey());
         this.objectMapper = objectMapper;
     }
 
@@ -132,10 +133,4 @@ public class ForecastDataProvider {
         return getForecastData.apply(coordinates, geocodeLocationItemDto);
     }
 
-    private static final class APIResponseParsingException extends RuntimeException {
-
-        public APIResponseParsingException(String message, JsonProcessingException exception) {
-            super(message, exception);
-        }
-    }
 }

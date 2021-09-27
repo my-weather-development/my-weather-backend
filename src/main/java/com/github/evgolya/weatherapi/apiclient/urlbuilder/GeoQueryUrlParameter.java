@@ -1,6 +1,6 @@
 package com.github.evgolya.weatherapi.apiclient.urlbuilder;
 
-import com.github.evgolya.geolocationapi.address.SearchedLocality;
+import com.github.evgolya.geolocationapi.locality.SearchedLocality;
 
 public class GeoQueryUrlParameter implements UrlParameter {
 

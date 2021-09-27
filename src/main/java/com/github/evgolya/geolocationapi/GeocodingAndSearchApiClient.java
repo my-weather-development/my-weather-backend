@@ -3,13 +3,13 @@ package com.github.evgolya.geolocationapi;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.evgolya.ApiConstantsProvider;
-import com.github.evgolya.geolocationapi.address.SearchedLocality;
 import com.github.evgolya.geolocationapi.dto.GeocodingLocationDto;
+import com.github.evgolya.geolocationapi.locality.SearchedLocality;
 import com.github.evgolya.vault.GeocodingAndSearchApiKeyProvider;
 import com.github.evgolya.weatherapi.apiclient.HttpRequestSender;
-import com.github.evgolya.weatherapi.apiclient.urlbuilder.GeoApiKeyUrlParameter;
 import com.github.evgolya.weatherapi.apiclient.urlbuilder.GeoLangUrlParameter;
 import com.github.evgolya.weatherapi.apiclient.urlbuilder.GeoQueryUrlParameter;
+import com.github.evgolya.weatherapi.apiclient.urlbuilder.apikey.GeoApiKeyUrlParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -32,7 +32,7 @@ public class GeocodingAndSearchApiClient {
     ) {
         this.httpRequestSender = httpRequestSender;
         this.objectMapper = objectMapper;
-        this.geoCodingApiKey = geocodingAndSearchApiKeyProvider.getKey();
+        this.geoCodingApiKey = System.getenv().getOrDefault("GEOCODING_API_KEY", geocodingAndSearchApiKeyProvider.getKey());
     }
 
     public GeocodingLocationDto getCoordinatesByLocality(SearchedLocality searchedLocality) {

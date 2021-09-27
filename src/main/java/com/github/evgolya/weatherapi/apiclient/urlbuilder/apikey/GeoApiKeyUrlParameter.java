@@ -1,4 +1,6 @@
-package com.github.evgolya.weatherapi.apiclient.urlbuilder;
+package com.github.evgolya.weatherapi.apiclient.urlbuilder.apikey;
+
+import com.github.evgolya.weatherapi.apiclient.urlbuilder.UrlParameter;
 
 public class GeoApiKeyUrlParameter implements UrlParameter {
 
