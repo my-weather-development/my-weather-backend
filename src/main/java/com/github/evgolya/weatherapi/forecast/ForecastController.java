@@ -34,28 +34,36 @@ public class ForecastController {
         return "Server is available";
     }
 
-    @PostMapping(path = "/current-weather/locality", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/current-weather", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<ExtendedCurrentWeatherDto> getCurrentWeatherForLocality(
         @RequestBody(required = false) SearchedLocality searchedLocalityCommand,
         HttpServletRequest httpServletRequest
     ) {
-        final SearchedLocality searchedLocality = isNull(searchedLocalityCommand) || searchedLocalityCommand.isEmpty()
-            ? localityByIpProvider.getLocality(httpServletRequest.getRemoteAddr())
-            : searchedLocalityCommand;
-
+        final SearchedLocality searchedLocality = getSearchedLocalityByIp(searchedLocalityCommand, httpServletRequest.getRemoteAddr());
         return ResponseEntity
             .ok()
             .header("Access-Control-Allow-Origin", "*")
             .body(forecastDataProvider.getCurrentWeatherForLocality(searchedLocality));
     }
 
-    @PostMapping(path = "/forecast/locality/{days}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/forecast/{days}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<ExtendedFullForecastDto> getForecastForLocality(@PathVariable Integer days, @RequestBody SearchedLocality searchedLocalityCommand) {
+    public ResponseEntity<ExtendedFullForecastDto> getForecastForLocality(
+        @PathVariable Integer days,
+        @RequestBody(required = false) SearchedLocality searchedLocalityCommand,
+        HttpServletRequest httpServletRequest
+    ) {
+        final SearchedLocality searchedLocality = getSearchedLocalityByIp(searchedLocalityCommand, httpServletRequest.getRemoteAddr());
         return ResponseEntity
             .ok()
             .header("Access-Control-Allow-Origin", "*")
-            .body(forecastDataProvider.getForecastForLocality(days, searchedLocalityCommand));
+            .body(forecastDataProvider.getForecastForLocality(days, searchedLocality));
+    }
+
+    private SearchedLocality getSearchedLocalityByIp(SearchedLocality searchedLocality, String ip) {
+        return isNull(searchedLocality) || searchedLocality.isEmpty()
+            ? localityByIpProvider.getLocality(ip)
+            : searchedLocality;
     }
 }
