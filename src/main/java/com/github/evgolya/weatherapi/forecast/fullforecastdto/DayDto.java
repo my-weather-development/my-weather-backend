@@ -2,7 +2,6 @@ package com.github.evgolya.weatherapi.forecast.fullforecastdto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.evgolya.weatherapi.forecast.ConditionDto;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DayDto {

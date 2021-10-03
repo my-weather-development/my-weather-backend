@@ -2,7 +2,7 @@ package com.github.evgolya.weatherapi.forecast.currentweatherdto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.evgolya.weatherapi.forecast.ConditionDto;
+import com.github.evgolya.weatherapi.forecast.fullforecastdto.ConditionDto;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CurrentForecast {

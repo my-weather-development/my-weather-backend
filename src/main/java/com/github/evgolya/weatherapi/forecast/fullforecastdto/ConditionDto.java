@@ -1,4 +1,4 @@
-package com.github.evgolya.weatherapi.forecast;
+package com.github.evgolya.weatherapi.forecast.fullforecastdto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

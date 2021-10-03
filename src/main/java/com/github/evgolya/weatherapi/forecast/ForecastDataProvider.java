@@ -19,6 +19,8 @@ import com.github.evgolya.weatherapi.forecast.currentweatherdto.CurrentWeatherDt
 import com.github.evgolya.weatherapi.forecast.currentweatherdto.ExtendedCurrentWeatherDto;
 import com.github.evgolya.weatherapi.forecast.fullforecastdto.ExtendedFullForecastDto;
 import com.github.evgolya.weatherapi.forecast.fullforecastdto.FullForecastDto;
+import com.github.evgolya.weatherapi.fourhoursforecast.FourHoursForecastDto;
+import com.github.evgolya.weatherapi.fourhoursforecast.FourHoursForecastProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -66,10 +68,10 @@ public class ForecastDataProvider {
     public ExtendedFullForecastDto getForecastForLocality(Integer days, SearchedLocality searchedLocality) {
         return getWeatherForecastForCoordinates(
             searchedLocality,
-            () -> new ExtendedFullForecastDto(new FullForecastDto(), new GeocodeLocationItemDto()),
+            () -> new ExtendedFullForecastDto(new FullForecastDto(), new FourHoursForecastDto(), new GeocodeLocationItemDto()),
             (coordinates, geocodeLocationDto) -> {
                 final FullForecastDto fullForecastDto = getForecastByCoordinates(days, coordinates.getLatitude(), coordinates.getLongitude());
-                return new ExtendedFullForecastDto(fullForecastDto, geocodeLocationDto);
+                return new ExtendedFullForecastDto(fullForecastDto, FourHoursForecastProvider.get(fullForecastDto), geocodeLocationDto);
             }
         );
     }
