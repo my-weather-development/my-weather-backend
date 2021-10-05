@@ -54,6 +54,8 @@ For more details see guides and Vault docs:
 
 ```https://www.vaultproject.io/docs```
 
+```https://cloud.spring.io/spring-cloud-vault/reference/html/#_quick_start```
+
 ## Spring with dockerized Vault in PROD mode:
 
 - Write docker-compose file for starting Vault (you can use our dc file as example or use ```https://hub.docker.com/_/vault```)
@@ -77,3 +79,15 @@ For more details see guides and Vault docs:
 ```spring.cloud.vault.kv.enabled=true```
 
 ##### Note that ```VAULT_DEV_ROOT_TOKEN_ID``` (in docker-compose) is REDUNDANT for PROD mode and will be ignored by Vault during starting.
+
+##### Additional different info:
+
+- ###### Package org.hibernate.dialect
+
+```https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/dialect/package-summary.html```
+
+- ###### Initialize a Database Using Hibernate
+
+```https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.data-initialization```
+
+
