@@ -1,4 +1,4 @@
-package com.github.evgolya.application;
+package com.github.evgolya.configuration;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

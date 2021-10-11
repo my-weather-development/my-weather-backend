@@ -1,9 +1,9 @@
-package com.github.evgolya.application;
+package com.github.evgolya;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = "com.github.evgolya.*")
+@SpringBootApplication
 public class MyWeatherApplication {
 
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package com.github.evgolya.application;
+package com.github.evgolya.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
