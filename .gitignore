@@ -29,3 +29,4 @@ out/
 /dev/vault/vault/file
 /dev/vault/vault/logs
 /dev/vault/vault/policies
+/dev/postgresql/data
