@@ -16,7 +16,7 @@ public class LocalityAutocompleteController {
     private final LocalityAutocompleteService localityAutocompleteService;
     private final String publicIpMock;
 
-    public LocalityAutocompleteController(@Value("${public.ip.mock}") String publicIpMock, LocalityAutocompleteService localityAutocompleteService) {
+    public LocalityAutocompleteController(@Value("${public.ipv4.mock}") String publicIpMock, LocalityAutocompleteService localityAutocompleteService) {
         this.localityAutocompleteService = localityAutocompleteService;
         this.publicIpMock = publicIpMock;
     }

@@ -27,7 +27,7 @@ public class ForecastController {
     private final String publicIpMock;
 
     public ForecastController(
-        @Value("${public.ip.mock}") String publicIpMock,
+        @Value("${public.ipv4.mock}") String publicIpMock,
         ForecastDataProvider forecastDataProvider,
         LocalityByIpProvider localityByIpProvider
     ) {
