@@ -14,6 +14,8 @@ import java.time.Duration;
 @EnableCaching
 public class MyWeatherConfiguration {
 
+    public static final String CACHE_NAME = "localities";
+
     @Bean
     public ObjectMapper createObjectMapper() {
         return new ObjectMapper();
@@ -27,7 +29,7 @@ public class MyWeatherConfiguration {
 
     @Bean
     public CacheManager cacheManager(Caffeine<Object, Object> caffeine) {
-        final CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager("localities");
+        final CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager(CACHE_NAME);
         caffeineCacheManager.setCaffeine(caffeine);
         return caffeineCacheManager;
     }

@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import java.net.http.HttpResponse;
 
+import static com.github.evgolya.configuration.MyWeatherConfiguration.CACHE_NAME;
+
 @Component
 public class LocalityByIpProvider {
 
@@ -21,17 +23,13 @@ public class LocalityByIpProvider {
     private final ObjectMapper objectMapper;
     private final HttpRequestSender httpRequestSender;
 
-    public LocalityByIpProvider(
-        ObjectMapper objectMapper,
-        HttpRequestSender httpRequestSender,
-        IpStackApiKeyProvider ipStackApiKeyProvider
-    ) {
+    public LocalityByIpProvider(ObjectMapper objectMapper, HttpRequestSender httpRequestSender, IpStackApiKeyProvider ipStackApiKeyProvider) {
         this.objectMapper = objectMapper;
         this.httpRequestSender = httpRequestSender;
         this.geolocationApiKey = System.getenv().getOrDefault("IP_STACK_API_KEY", ipStackApiKeyProvider.getKey());
     }
 
-    @Cacheable(cacheNames = "localities", key = "#ip")
+    @Cacheable(cacheNames = CACHE_NAME, key = "#ip")
     public SearchedLocality getLocality(String ip) {
         final HttpResponse<String> httpResponse = httpRequestSender.send(
             ApiConstantsProvider.IP_STACK_API_CONTEXT,

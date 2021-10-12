@@ -9,13 +9,14 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.github.evgolya.configuration.MyWeatherConfiguration.CACHE_NAME;
+
 @Service
 public class LocalityAutocompleteService {
 
     private static final int TOP_10_LOCALITIES = 10;
     private final LocalityAutocompleteRepository localityAutocompleteRepository;
     private final CacheManager cacheManager;
-
 
     public LocalityAutocompleteService(
         LocalityAutocompleteRepository localityAutocompleteRepository,
@@ -47,7 +48,7 @@ public class LocalityAutocompleteService {
     }
 
     private SearchedLocality getCachedLocalityByIp(String ip) {
-        final Cache cache = cacheManager.getCache("localities");
+        final Cache cache = cacheManager.getCache(CACHE_NAME);
         return cache.get(ip, SearchedLocality.class); // TODO: fix NPE
     }
 }

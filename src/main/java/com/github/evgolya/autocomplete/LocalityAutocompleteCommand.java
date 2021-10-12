@@ -4,8 +4,6 @@ import java.util.Objects;
 
 public class LocalityAutocompleteCommand {
 
-    // TODO: get country from cache
-
     private String locality;
 
     public String getLocality() {
