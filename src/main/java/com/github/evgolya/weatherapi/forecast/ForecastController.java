@@ -4,6 +4,7 @@ import com.github.evgolya.geolocationapi.LocalityByIpProvider;
 import com.github.evgolya.geolocationapi.locality.SearchedLocality;
 import com.github.evgolya.weatherapi.forecast.currentweatherdto.ExtendedCurrentWeatherDto;
 import com.github.evgolya.weatherapi.forecast.fullforecastdto.ExtendedFullForecastDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,16 +18,23 @@ import javax.servlet.http.HttpServletRequest;
 
 import static java.util.Objects.isNull;
 
+// TODO: use ip from HttpServletRequest instead publicIpMock
 // TODO: set header to a response instead duplicating (https://www.baeldung.com/spring-response-header#3-adding-a-header-for-all-responses)
 @RestController
 public class ForecastController {
 
     private final ForecastDataProvider forecastDataProvider;
     private final LocalityByIpProvider localityByIpProvider;
+    private final String publicIpMock;
 
-    public ForecastController(ForecastDataProvider forecastDataProvider, LocalityByIpProvider localityByIpProvider) {
+    public ForecastController(
+        @Value("${public.ip.mock}") String publicIpMock,
+        ForecastDataProvider forecastDataProvider,
+        LocalityByIpProvider localityByIpProvider
+    ) {
         this.forecastDataProvider = forecastDataProvider;
         this.localityByIpProvider = localityByIpProvider;
+        this.publicIpMock = publicIpMock;
     }
 
     @GetMapping("/health-check")
@@ -40,7 +48,7 @@ public class ForecastController {
         @RequestBody(required = false) SearchedLocality searchedLocalityCommand,
         HttpServletRequest httpServletRequest
     ) {
-        final SearchedLocality searchedLocality = getSearchedLocalityByIp(searchedLocalityCommand, httpServletRequest.getRemoteAddr());
+        final SearchedLocality searchedLocality = getSearchedLocalityByIp(searchedLocalityCommand, publicIpMock);
         return ResponseEntity
             .ok()
             .header("Access-Control-Allow-Origin", "*")
@@ -54,7 +62,7 @@ public class ForecastController {
         @RequestBody(required = false) SearchedLocality searchedLocalityCommand,
         HttpServletRequest httpServletRequest
     ) {
-        final SearchedLocality searchedLocality = getSearchedLocalityByIp(searchedLocalityCommand, httpServletRequest.getRemoteAddr());
+        final SearchedLocality searchedLocality = getSearchedLocalityByIp(searchedLocalityCommand, publicIpMock);
         return ResponseEntity
             .ok()
             .header("Access-Control-Allow-Origin", "*")
