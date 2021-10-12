@@ -12,17 +12,22 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    springBootStarterVersion = '2.5.4'
+    vaultVersion = '2.2.2.RELEASE'
+}
+
 dependencies {
-    implementation 'com.github.ben-manes.caffeine:caffeine:3.0.4'
-    implementation 'org.springframework.boot:spring-boot-starter-cache:2.5.4'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.4'
-    implementation 'org.postgresql:postgresql:42.2.23'
-    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap:3.0.3'
-    implementation 'org.springframework.cloud:spring-cloud-starter-vault-config:2.2.2.RELEASE'
-    implementation 'org.springframework.vault:spring-vault-core:2.2.2.RELEASE'
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.2'
-    implementation 'org.springframework.boot:spring-boot-configuration-processor:2.5.2'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.2'
+    implementation "com.github.ben-manes.caffeine:caffeine:3.0.4"
+    implementation "org.springframework.boot:spring-boot-starter-cache:${springBootStarterVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootStarterVersion}"
+    implementation "org.postgresql:postgresql:42.2.23"
+    implementation "org.springframework.cloud:spring-cloud-starter-bootstrap:3.0.3"
+    implementation "org.springframework.cloud:spring-cloud-starter-vault-config:${vaultVersion}"
+    implementation "org.springframework.vault:spring-vault-core:${vaultVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootStarterVersion}"
+    implementation "org.springframework.boot:spring-boot-configuration-processor:${springBootStarterVersion}"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootStarterVersion}"
 }
 
 test {

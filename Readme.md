@@ -90,4 +90,6 @@ For more details see guides and Vault docs:
 
 ```https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.data-initialization```
 
+- ###### Ping IPv6
 
+```http://www.ipv6now.com.au/pingme.php```
