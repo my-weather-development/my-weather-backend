@@ -22,9 +22,6 @@ dependencies {
     implementation 'org.springframework.vault:spring-vault-core:2.2.2.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.5.2'
     implementation 'org.springframework.boot:spring-boot-configuration-processor:2.5.2'
-
-    runtimeOnly 'org.slf4j:slf4j-simple'
-
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.2'
 }
 

@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import static java.util.Objects.isNull;
 
 // TODO: use ip from HttpServletRequest instead publicIpMock
-// TODO: set header to a response instead duplicating (https://www.baeldung.com/spring-response-header#3-adding-a-header-for-all-responses)
 @RestController
 public class ForecastController {
 
@@ -51,7 +50,6 @@ public class ForecastController {
         final SearchedLocality searchedLocality = getSearchedLocalityByIp(searchedLocalityCommand, publicIpMock);
         return ResponseEntity
             .ok()
-            .header("Access-Control-Allow-Origin", "*")
             .body(forecastDataProvider.getCurrentWeatherForLocality(searchedLocality));
     }
 
@@ -65,7 +63,6 @@ public class ForecastController {
         final SearchedLocality searchedLocality = getSearchedLocalityByIp(searchedLocalityCommand, publicIpMock);
         return ResponseEntity
             .ok()
-            .header("Access-Control-Allow-Origin", "*")
             .body(forecastDataProvider.getForecastForLocality(days, searchedLocality));
     }
 

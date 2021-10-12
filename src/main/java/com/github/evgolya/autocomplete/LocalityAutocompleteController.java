@@ -29,7 +29,6 @@ public class LocalityAutocompleteController {
     ) {
         return ResponseEntity
              .ok()
-             .header("Access-Control-Allow-Origin", "*")
              .body(localityAutocompleteService.getLocalitiesAutocomplete(localityAutocompleteCommand.getLocality(), publicIpMock));
     }
 }

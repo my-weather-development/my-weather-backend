@@ -23,7 +23,6 @@ public class AstronomyController {
     public ResponseEntity<AstronomyDto> getAstronomyData(@RequestBody LocalityCoordinates localityCoordinates) {
         return ResponseEntity
             .ok()
-            .header("Access-Control-Allow-Origin", "*")
             .body(forecastDataProvider.getAstronomyData(localityCoordinates.getLatitude(),localityCoordinates.getLongitude()));
     }
 }

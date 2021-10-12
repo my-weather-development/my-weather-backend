@@ -31,6 +31,7 @@ public class LocalityByIpProvider {
 
     @Cacheable(cacheNames = CACHE_NAME, key = "#ip")
     public SearchedLocality getLocality(String ip) {
+        // TODO: check for IPv6
         final HttpResponse<String> httpResponse = httpRequestSender.send(
             ApiConstantsProvider.IP_STACK_API_CONTEXT,
             ApiConstantsProvider.ROOT_PATH + ip,
