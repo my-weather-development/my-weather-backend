@@ -14,7 +14,7 @@ import static java.util.Objects.nonNull;
 
 public class FourHoursForecastProvider {
 
-    private static final String SELECT_HOURS_PATTERN = "\\d{2}:\\d{2}";
+    private static final Pattern SELECT_HOURS_PATTERN = Pattern.compile("\\d{2}:\\d{2}");
 
     public static FourHoursForecastDto get(FullForecastDto fullForecastDto) {
         final List<HourDto> result = new ArrayList<>();
@@ -32,8 +32,7 @@ public class FourHoursForecastProvider {
     }
 
     private static String getMatchedTime(HourDto hourDto) {
-        final Matcher matcher = Pattern.compile(SELECT_HOURS_PATTERN)
-            .matcher(hourDto.getTime());
+        final Matcher matcher = SELECT_HOURS_PATTERN.matcher(hourDto.getTime());
         return matcher.find() ? matcher.group() : null;
     }
 
