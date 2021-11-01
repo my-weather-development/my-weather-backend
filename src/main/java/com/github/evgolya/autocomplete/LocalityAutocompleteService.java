@@ -15,14 +15,14 @@ import static com.github.evgolya.configuration.MyWeatherConfiguration.CACHE_NAME
 public class LocalityAutocompleteService {
 
     private static final int TOP_10_LOCALITIES = 10;
-    private final LocalityAutocompleteRepository localityAutocompleteRepository;
+    private final SettlementRepository settlementRepository;
     private final CacheManager cacheManager;
 
     public LocalityAutocompleteService(
-        LocalityAutocompleteRepository localityAutocompleteRepository,
+        SettlementRepository settlementRepository,
         CacheManager cacheManager
     ) {
-        this.localityAutocompleteRepository = localityAutocompleteRepository;
+        this.settlementRepository = settlementRepository;
         this.cacheManager = cacheManager;
     }
 
@@ -30,10 +30,10 @@ public class LocalityAutocompleteService {
     public LocalityAutocompleteDto getLocalitiesAutocomplete(String locality, String ip) {
         final String country = getCachedLocalityByIp(ip).getCountry(); // TODO: handle case for states in the USA
 
-        final List<Settlement> settlements = localityAutocompleteRepository.findAll();
+        final List<Settlement> settlements = settlementRepository.findAll();
 
-        // TODO: search all matches by locality, in java filter by country and sort by alphabet
         // TODO: setup database
+        // TODO: search all matches by locality, in java - filter by country and sort by alphabet
         final List<LocalityAutocomplete> localities = settlements.stream()
             .filter(settlement -> !Pattern.matches(locality, settlement.getLocality()))
             .limit(TOP_10_LOCALITIES)

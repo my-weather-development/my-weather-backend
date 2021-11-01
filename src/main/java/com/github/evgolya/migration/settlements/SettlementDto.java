@@ -1,116 +1,96 @@
-package com.github.evgolya.autocomplete;
+package com.github.evgolya.migration.settlements;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.util.Objects;
 
-@Entity
-public class Settlement {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class SettlementDto {
 
     private String country;
-
     private String region;
-
     private String state;
-
     private String locality;
-
     private String localityAscii;
-
     private Double latitude;
-
     private Double longitude;
-
     private String countryCode;
-
-    public Settlement() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public SettlementDto setCountry(String country) {
         this.country = country;
+        return this;
     }
 
     public String getRegion() {
         return region;
     }
 
-    public void setRegion(String region) {
+    public SettlementDto setRegion(String region) {
         this.region = region;
+        return this;
     }
 
     public String getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public SettlementDto setState(String state) {
         this.state = state;
+        return this;
     }
 
     public String getLocality() {
         return locality;
     }
 
-    public void setLocality(String locality) {
+    public SettlementDto setLocality(String locality) {
         this.locality = locality;
+        return this;
     }
 
     public String getLocalityAscii() {
         return localityAscii;
     }
 
-    public void setLocalityAscii(String localityAscii) {
+    public SettlementDto setLocalityAscii(String localityAscii) {
         this.localityAscii = localityAscii;
+        return this;
     }
 
     public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Double latitude) {
+    public SettlementDto setLatitude(Double latitude) {
         this.latitude = latitude;
+        return this;
     }
 
     public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Double longitude) {
+    public SettlementDto setLongitude(Double longitude) {
         this.longitude = longitude;
+        return this;
     }
 
     public String getCountryCode() {
         return countryCode;
     }
 
-    public void setCountryCode(String countryCode) {
+    public SettlementDto setCountryCode(String countryCode) {
         this.countryCode = countryCode;
+        return this;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Settlement that = (Settlement) o;
-        return Objects.equals(id, that.id) &&
-            Objects.equals(country, that.country) &&
+        SettlementDto that = (SettlementDto) o;
+        return Objects.equals(country, that.country) &&
             Objects.equals(region, that.region) &&
             Objects.equals(state, that.state) &&
             Objects.equals(locality, that.locality) &&
@@ -122,6 +102,6 @@ public class Settlement {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, country, region, state, locality, localityAscii, latitude, longitude, countryCode);
+        return Objects.hash(country, region, state, locality, localityAscii, latitude, longitude, countryCode);
     }
 }
