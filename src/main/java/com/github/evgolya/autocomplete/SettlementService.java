@@ -15,11 +15,11 @@ public class SettlementService {
         this.settlementRepository = settlementRepository;
     }
 
-    public void save(List<SettlementDto> settlementDtos) {
+    public List<Settlement> save(List<SettlementDto> settlementDtos) {
         final List<Settlement> settlements = settlementDtos.stream()
             .map(this::createSettlement)
             .collect(Collectors.toList());
-        settlementRepository.saveAll(settlements);
+        return settlementRepository.saveAll(settlements);
     }
 
     private Settlement createSettlement(SettlementDto dto) {

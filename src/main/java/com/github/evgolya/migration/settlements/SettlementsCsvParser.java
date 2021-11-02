@@ -3,6 +3,8 @@ package com.github.evgolya.migration.settlements;
 import com.github.evgolya.autocomplete.CountryCodeWithStates;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -15,20 +17,22 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class CsvSettlementsParser {
+public class SettlementsCsvParser {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SettlementsCsvParser.class);
     private static final String SETTLEMENTS_CSV = "settlements/settlements.csv";
     private static final int NUMBER_OF_LINES_TO_SKIP = 1;
 
     private final Set<String> countryCodeWithStates;
 
-    public CsvSettlementsParser() {
+    public SettlementsCsvParser() {
         this.countryCodeWithStates = Arrays.stream(CountryCodeWithStates.values())
             .map(CountryCodeWithStates::name)
             .collect(Collectors.toSet());
     }
 
     public List<SettlementDto> parse() {
+        LOGGER.info("Starting parsing of settlements");
         try (
             final InputStream inputStream = getClass().getClassLoader().getResourceAsStream(SETTLEMENTS_CSV);
             final CSVReader csvReader = new CSVReader(new InputStreamReader(nullOrInputStream(inputStream)))
@@ -54,6 +58,7 @@ public class CsvSettlementsParser {
 
                 settlements.add(settlementDto);
             }
+            LOGGER.info("Settlements was parsed");
             return settlements;
         } catch (IOException | CsvException e) {
             throw new CannotReadCSVException("Cannot parse CSV file: " + SETTLEMENTS_CSV, e);
