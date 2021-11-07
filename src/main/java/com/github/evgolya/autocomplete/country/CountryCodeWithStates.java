@@ -1,4 +1,4 @@
-package com.github.evgolya.autocomplete;
+package com.github.evgolya.autocomplete.country;
 
 public enum CountryCodeWithStates {
 

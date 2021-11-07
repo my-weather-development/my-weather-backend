@@ -1,5 +1,7 @@
 package com.github.evgolya.autocomplete;
 
+import com.github.evgolya.autocomplete.settlement.Settlement;
+import com.github.evgolya.autocomplete.settlement.SettlementRepository;
 import com.github.evgolya.geolocationapi.locality.SearchedLocality;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;

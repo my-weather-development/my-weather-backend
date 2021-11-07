@@ -1,6 +1,6 @@
 package com.github.evgolya.migration.settlements;
 
-import com.github.evgolya.autocomplete.CountryCodeWithStates;
+import com.github.evgolya.autocomplete.country.CountryCodeWithStates;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import org.slf4j.Logger;
@@ -16,28 +16,30 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
-public class SettlementsCsvParser {
+import static com.github.evgolya.migration.settlements.LocalityDto.newBuilder;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SettlementsCsvParser.class);
+@Component
+public class LocalitiesCsvParser {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocalitiesCsvParser.class);
     private static final String SETTLEMENTS_CSV = "settlements/settlements.csv";
     private static final int NUMBER_OF_LINES_TO_SKIP = 1;
 
     private final Set<String> countryCodeWithStates;
 
-    public SettlementsCsvParser() {
+    public LocalitiesCsvParser() {
         this.countryCodeWithStates = Arrays.stream(CountryCodeWithStates.values())
             .map(CountryCodeWithStates::name)
             .collect(Collectors.toSet());
     }
 
-    public List<SettlementDto> parse() {
+    public List<LocalityDto> parse() {
         LOGGER.info("Starting parsing of settlements");
         try (
             final InputStream inputStream = getClass().getClassLoader().getResourceAsStream(SETTLEMENTS_CSV);
             final CSVReader csvReader = new CSVReader(new InputStreamReader(nullOrInputStream(inputStream)))
         ) {
-            final List<SettlementDto> settlements = new ArrayList<>();
+            final List<LocalityDto> settlements = new ArrayList<>();
             csvReader.skip(NUMBER_OF_LINES_TO_SKIP);
             for (String[] line : csvReader.readAll()) {
                 final String administrativeTerritorialUnit = line[7];
@@ -48,15 +50,17 @@ public class SettlementsCsvParser {
                 final String locality = line[0];
                 final String country = line[4];
 
-                final SettlementDto settlementDto = createSettlementDtoWithStateOrRegion(administrativeTerritorialUnit, countryCode)
+                final LocalityDto localityDto = newBuilder()
                     .setLatitude(latitude)
                     .setLongitude(longitude)
                     .setCountry(country)
                     .setCountryCode(countryCode)
                     .setLocality(locality)
-                    .setLocalityAscii(localityAscii);
+                    .setLocalityAscii(localityAscii)
+                    .setAdministrativeTerritorialUnit(administrativeTerritorialUnit)
+                    .setIsState(countryCodeWithStates.contains(countryCode));
 
-                settlements.add(settlementDto);
+                settlements.add(localityDto);
             }
             LOGGER.info("Settlements was parsed");
             return settlements;
@@ -70,13 +74,6 @@ public class SettlementsCsvParser {
             throw new CannotReadCSVException("Cannot find CSV file with name: " + SETTLEMENTS_CSV);
         }
         return inputStream;
-    }
-
-    private SettlementDto createSettlementDtoWithStateOrRegion(String administrativeTerritorialUnit, String countryCode) {
-        final SettlementDto settlementDto = new SettlementDto();
-        return countryCodeWithStates.contains(countryCode)
-            ? settlementDto.setState(administrativeTerritorialUnit)
-            : settlementDto.setRegion(administrativeTerritorialUnit);
     }
 
     private static final class CannotReadCSVException extends RuntimeException {

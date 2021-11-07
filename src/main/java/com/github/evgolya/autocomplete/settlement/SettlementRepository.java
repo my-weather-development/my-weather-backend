@@ -1,4 +1,4 @@
-package com.github.evgolya.autocomplete;
+package com.github.evgolya.autocomplete.settlement;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

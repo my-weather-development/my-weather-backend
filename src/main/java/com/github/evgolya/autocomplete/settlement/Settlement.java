@@ -1,9 +1,12 @@
-package com.github.evgolya.autocomplete;
+package com.github.evgolya.autocomplete.settlement;
+
+import com.github.evgolya.autocomplete.domain.Domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.util.Objects;
 
 @Entity
@@ -13,21 +16,16 @@ public class Settlement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String country;
-
-    private String region;
-
-    private String state;
+    @ManyToOne(optional = false)
+    private Domain domain;
 
     private String locality;
 
-    private String localityAscii;
+    private String ascii;
 
     private Double latitude;
 
     private Double longitude;
-
-    private String countryCode;
 
     public Settlement() {
     }
@@ -40,28 +38,12 @@ public class Settlement {
         this.id = id;
     }
 
-    public String getCountry() {
-        return country;
+    public Domain getDomain() {
+        return domain;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
+    public void setDomain(Domain domain) {
+        this.domain = domain;
     }
 
     public String getLocality() {
@@ -72,12 +54,12 @@ public class Settlement {
         this.locality = locality;
     }
 
-    public String getLocalityAscii() {
-        return localityAscii;
+    public String getAscii() {
+        return ascii;
     }
 
-    public void setLocalityAscii(String localityAscii) {
-        this.localityAscii = localityAscii;
+    public void setAscii(String ascii) {
+        this.ascii = ascii;
     }
 
     public Double getLatitude() {
@@ -96,32 +78,21 @@ public class Settlement {
         this.longitude = longitude;
     }
 
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Settlement that = (Settlement) o;
         return Objects.equals(id, that.id) &&
-            Objects.equals(country, that.country) &&
-            Objects.equals(region, that.region) &&
-            Objects.equals(state, that.state) &&
+            Objects.equals(domain, that.domain) &&
             Objects.equals(locality, that.locality) &&
-            Objects.equals(localityAscii, that.localityAscii) &&
+            Objects.equals(ascii, that.ascii) &&
             Objects.equals(latitude, that.latitude) &&
-            Objects.equals(longitude, that.longitude) &&
-            Objects.equals(countryCode, that.countryCode);
+            Objects.equals(longitude, that.longitude);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, country, region, state, locality, localityAscii, latitude, longitude, countryCode);
+        return Objects.hash(id, domain, locality, ascii, latitude, longitude);
     }
 }
