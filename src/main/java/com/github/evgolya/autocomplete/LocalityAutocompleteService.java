@@ -41,9 +41,10 @@ public class LocalityAutocompleteService {
             .limit(TOP_10_LOCALITIES)
             .map(settlement -> new LocalityAutocomplete()
                 .setLocality(settlement.getLocality())
-                .setCountry(settlement.getCountry())
-                .setRegion(settlement.getRegion())
-                .setState(settlement.getState())
+                // TODO: get from another tables
+//                .setCountry(settlement.getCountry())
+//                .setRegion(settlement.getRegion())
+//                .setState(settlement.getState())
             ).collect(Collectors.toList());
 
         return new LocalityAutocompleteDto(localities);
