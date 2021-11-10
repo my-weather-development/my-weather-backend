@@ -12,11 +12,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.github.evgolya.migration.settlements.LocalityDto.newBuilder;
 
 @Component
 public class LocalitiesCsvParser {
@@ -33,13 +33,14 @@ public class LocalitiesCsvParser {
             .collect(Collectors.toSet());
     }
 
-    public List<LocalityDto> parse() {
+    public Map<CountryDto, Map<DomainDto, List<SettlementDto>>> parse() {
         LOGGER.info("Starting parsing of settlements");
         try (
             final InputStream inputStream = getClass().getClassLoader().getResourceAsStream(SETTLEMENTS_CSV);
             final CSVReader csvReader = new CSVReader(new InputStreamReader(nullOrInputStream(inputStream)))
         ) {
-            final List<LocalityDto> settlements = new ArrayList<>();
+            final Map<CountryDto, Map<DomainDto, List<SettlementDto>>> result = new HashMap<>();
+
             csvReader.skip(NUMBER_OF_LINES_TO_SKIP);
             for (String[] line : csvReader.readAll()) {
                 final String administrativeTerritorialUnit = line[7];
@@ -50,20 +51,25 @@ public class LocalitiesCsvParser {
                 final String locality = line[0];
                 final String country = line[4];
 
-                final LocalityDto localityDto = newBuilder()
-                    .setLatitude(latitude)
-                    .setLongitude(longitude)
-                    .setCountry(country)
-                    .setCountryCode(countryCode)
-                    .setLocality(locality)
-                    .setLocalityAscii(localityAscii)
-                    .setAdministrativeTerritorialUnit(administrativeTerritorialUnit)
+                final CountryDto countryDto = new CountryDto()
+                    .setTitle(country)
+                    .setCountryCode(countryCode);
+                final DomainDto domainDto = new DomainDto()
+                    .setTitle(administrativeTerritorialUnit)
                     .setIsState(countryCodeWithStates.contains(countryCode));
+                final SettlementDto settlementDto = new SettlementDto()
+                    .setAscii(localityAscii)
+                    .setLocality(locality)
+                    .setLatitude(latitude)
+                    .setLongitude(longitude);
 
-                settlements.add(localityDto);
+                result.computeIfAbsent(countryDto, k -> new HashMap<>())
+                    .computeIfAbsent(domainDto, k -> new ArrayList<>())
+                    .add(settlementDto);
             }
-            LOGGER.info("Settlements was parsed");
-            return settlements;
+            LOGGER.info("Settlements were parsed");
+
+            return result;
         } catch (IOException | CsvException e) {
             throw new CannotReadCSVException("Cannot parse CSV file: " + SETTLEMENTS_CSV, e);
         }

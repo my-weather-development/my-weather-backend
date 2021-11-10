@@ -2,6 +2,7 @@ package com.github.evgolya.autocomplete.settlement;
 
 import com.github.evgolya.autocomplete.domain.Domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +17,7 @@ public class Settlement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private Domain domain;
 
     private String locality;
@@ -78,6 +79,10 @@ public class Settlement {
         this.longitude = longitude;
     }
 
+    public static SettlementBuilder builder() {
+        return new SettlementBuilder();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -94,5 +99,49 @@ public class Settlement {
     @Override
     public int hashCode() {
         return Objects.hash(id, domain, locality, ascii, latitude, longitude);
+    }
+
+    public static final class SettlementBuilder {
+
+        private Domain domain;
+        private String locality;
+        private String ascii;
+        private Double latitude;
+        private Double longitude;
+
+        public SettlementBuilder setDomain(Domain domain) {
+            this.domain = domain;
+            return this;
+        }
+
+        public SettlementBuilder setLocality(String locality) {
+            this.locality = locality;
+            return this;
+        }
+
+        public SettlementBuilder setAscii(String ascii) {
+            this.ascii = ascii;
+            return this;
+        }
+
+        public SettlementBuilder setLatitude(Double latitude) {
+            this.latitude = latitude;
+            return this;
+        }
+
+        public SettlementBuilder setLongitude(Double longitude) {
+            this.longitude = longitude;
+            return this;
+        }
+
+        public Settlement build() {
+            final Settlement settlement = new Settlement();
+            settlement.setDomain(this.domain);
+            settlement.setLocality(this.locality);
+            settlement.setAscii(this.ascii);
+            settlement.setLatitude(this.latitude);
+            settlement.setLongitude(this.longitude);
+            return settlement;
+        }
     }
 }

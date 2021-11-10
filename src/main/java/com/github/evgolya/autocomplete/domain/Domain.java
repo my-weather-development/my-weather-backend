@@ -3,6 +3,7 @@ package com.github.evgolya.autocomplete.domain;
 import com.github.evgolya.autocomplete.country.Country;
 import com.github.evgolya.autocomplete.settlement.Settlement;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,7 +26,7 @@ public class Domain {
 
     private Boolean isState;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private Country country;
 
     @OneToMany(mappedBy = "domain")

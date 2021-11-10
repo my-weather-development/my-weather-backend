@@ -21,7 +21,8 @@ public class LocalitiesMigrationController {
     @GetMapping("/migrate/localities")
     public void migrateSettlements() {
         try {
-            localitiesMigrator.save(localitiesCsvParser.parse());
+            localitiesMigrator.saveLocalities(localitiesCsvParser.parse());
+            LOGGER.info("The migration was successful");
         } catch (Exception e) {
             LOGGER.error("The migration of settlements didn't success");
         }
