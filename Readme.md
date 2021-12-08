@@ -93,3 +93,7 @@ For more details see guides and Vault docs:
 - ###### Ping IPv6
 
 ```http://www.ipv6now.com.au/pingme.php```
+
+- ###### UK, RU, BY (regions)
+
+```https://maps.vlasenko.net/list/ukraine/cherkaska/```
