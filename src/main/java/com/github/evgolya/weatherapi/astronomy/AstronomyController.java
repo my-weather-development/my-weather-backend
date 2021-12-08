@@ -18,7 +18,7 @@ public class AstronomyController {
         this.forecastDataProvider = forecastDataProvider;
     }
 
-    @PostMapping(path = "/astronomy", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/astronomy", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<AstronomyDto> getAstronomyData(@RequestBody LocalityCoordinates localityCoordinates) {
         return ResponseEntity

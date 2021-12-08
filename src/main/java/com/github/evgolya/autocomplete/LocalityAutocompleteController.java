@@ -1,6 +1,7 @@
 package com.github.evgolya.autocomplete;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ public class LocalityAutocompleteController {
         this.publicIpMock = publicIpMock;
     }
 
-    @GetMapping("/autocomplete")
+    @GetMapping(path = "/autocomplete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<LocalityAutocompleteDto> getLocalities(
         @RequestBody LocalityAutocompleteCommand localityAutocompleteCommand,

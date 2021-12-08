@@ -41,7 +41,7 @@ public class ForecastController {
         return "Server is available";
     }
 
-    @PostMapping(path = "/current-weather", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/current-weather", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<ExtendedCurrentWeatherDto> getCurrentWeatherForLocality(
         @RequestBody(required = false) SearchedLocality searchedLocalityCommand,
